@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+
 public class guiLogin {
     private JButton btConnect;
     private JPanel loginPanel;
@@ -30,6 +31,24 @@ public class guiLogin {
                 String url = "jdbc:postgresql://localhost:5432/Patient";
                 String user = textUsername.getText();
                 String password = textPasswort.getText();
+
+                try {
+                    Class.forName("org.postgresql.Driver");
+                } catch (ClassNotFoundException ex) {
+                    System.out.println(ex);
+                }
+
+                try {
+                    Connection connection = DriverManager.getConnection(url, user, password);
+
+                    if(connection != null) {
+                        System.out.println("Connected to PostgreSQL database");
+                    }
+
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+
 
 
 
