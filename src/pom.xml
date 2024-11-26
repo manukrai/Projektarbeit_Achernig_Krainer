@@ -1,0 +1,8 @@
+<dependencies>
+    <!-- Other dependencies -->
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>DRIVER_VERSION</version>
+    </dependency>
+</dependencies>
