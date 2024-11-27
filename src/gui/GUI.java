@@ -2,7 +2,8 @@ package gui;
 
 import javax.swing.*;
 
-public class GUI {
+public class GUI extends JFrame
+{
     private JPanel jPanel;
 
 

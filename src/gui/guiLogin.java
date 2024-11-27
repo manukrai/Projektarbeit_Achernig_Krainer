@@ -8,7 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class guiLogin {
+public class guiLogin extends JFrame
+{
+    private static JFrame frame;
     private JButton btConnect;
     private JPanel loginPanel;
     private JButton btCancel;
@@ -16,7 +18,7 @@ public class guiLogin {
     private JPasswordField textPasswort;
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("PatientDB login");
+        frame = new JFrame("PatientDB login");
         frame.setContentPane(new guiLogin().loginPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -43,6 +45,10 @@ public class guiLogin {
 
                     if(connection != null) {
                         System.out.println("Connected to PostgreSQL database");
+
+                        GUI secondForm = new GUI();
+                        secondForm.setVisible(true);
+                        frame.dispose();
                     }
 
                 } catch (SQLException ex) {
