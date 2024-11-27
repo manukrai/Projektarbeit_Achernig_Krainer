@@ -49,9 +49,6 @@ public class guiLogin {
                     System.out.println(ex);
                 }
 
-
-
-
             }
         });
         btCancel.addActionListener(new ActionListener() {
