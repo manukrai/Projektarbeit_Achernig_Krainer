@@ -11,10 +11,10 @@ public class Patient {
     private String strasse;
     private String plz;
     private String ort;
-    private int bundesland;
+    private int bundeslandID;
     private String telefon;
     private int geschlechtID;
-    private int krankenkasse;
+    private int krankenkasseID;
     private String sonstiges;
 
     // Standard-Konstruktor
@@ -31,10 +31,10 @@ public class Patient {
         this.strasse = strasse;
         this.plz = plz;
         this.ort = ort;
-        this.bundesland = bundesland;
+        this.bundeslandID = bundesland;
         this.telefon = telefon;
         this.geschlechtID = geschlechtID;
-        this.krankenkasse = krankenkasse;
+        this.krankenkasseID = krankenkasse;
         this.sonstiges = sonstiges;
     }
 
@@ -103,12 +103,12 @@ public class Patient {
         this.ort = ort;
     }
 
-    public int getBundesland() {
-        return bundesland;
+    public int getBundeslandID() {
+        return bundeslandID;
     }
 
-    public void setBundesland(int bundesland) {
-        this.bundesland = bundesland;
+    public void setBundeslandID(int bundesland) {
+        this.bundeslandID = bundesland;
     }
 
     public String getTelefon() {
@@ -127,12 +127,12 @@ public class Patient {
         this.geschlechtID = geschlechtID;
     }
 
-    public int getKrankenkasse() {
-        return krankenkasse;
+    public int getKrankenkasseID() {
+        return krankenkasseID;
     }
 
-    public void setKrankenkasse(int krankenkasse) {
-        this.krankenkasse = krankenkasse;
+    public void setKrankenkasseID(int krankenkasse) {
+        this.krankenkasseID = krankenkasse;
     }
 
     public String getSonstiges() {

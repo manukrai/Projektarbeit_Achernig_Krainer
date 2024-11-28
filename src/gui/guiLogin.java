@@ -39,8 +39,7 @@ public class guiLogin extends JFrame
 
                 if(DBAccess.connection != null)
                 {
-                    GUI secondForm = new GUI();
-                    secondForm.setVisible(true);
+                    GUI.showGUI();
                     frame.dispose();
                 }
 
