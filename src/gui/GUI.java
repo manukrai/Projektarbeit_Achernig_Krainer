@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class GUI extends JFrame
@@ -35,7 +37,7 @@ public class GUI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 Patient newPatient = new Patient();
-                newPatient.setVorname("Julia");
+                newPatient.setVorname("Achernig");
                 newPatient.setNachname("Müller");
                 newPatient.setAnrede("Frau");
                 newPatient.setGeburtsdatum(null);
@@ -72,6 +74,13 @@ public class GUI extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
                 String suchText = tfSearch.getText();
+            }
+        });
+        btSortieren.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Collections.sort(patients);
+                setTableModel();
             }
         });
     }

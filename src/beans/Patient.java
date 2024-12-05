@@ -1,8 +1,10 @@
 package beans;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Patient {
+public class Patient implements Comparable<Patient>
+{
     private int patientID;
     private String vorname;
     private String nachname;
@@ -141,6 +143,11 @@ public class Patient {
 
     public void setSonstiges(String sonstiges) {
         this.sonstiges = sonstiges;
+    }
+
+    @Override
+    public int compareTo(Patient p) {
+        return p.vorname.compareTo(this.vorname);
     }
 }
 
