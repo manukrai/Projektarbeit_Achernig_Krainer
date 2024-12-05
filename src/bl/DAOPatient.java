@@ -92,6 +92,16 @@ public class DAOPatient {
 
     public static boolean deletePatient(int patientId) {
         String sql = "DELETE FROM patient WHERE PatientID = ?";
+        String sql_befund = "DELETE FROM befund WHERE PatientID = ?";
+
+        try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql_befund)) {
+            statement.setInt(1, patientId);
+            int rowsAffected = statement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
 
         try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql)) {
             // Setze die PatientID als Parameter für die SQL-Abfrage
