@@ -2,17 +2,14 @@ package bl;
 
 import beans.Patient;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DAOPatient {
 
     // Alle Patienten abrufen
-    public List<Patient> getAllPatients() {
+    public static List<Patient> getAllPatients() {
         List<Patient> patients = new LinkedList<>();
         String query = """
             SELECT 
@@ -27,8 +24,7 @@ public class DAOPatient {
             LEFT JOIN krankenkasse k ON p.Krankenkasse = k.KrankenkasseID;
         """;
 
-        try (Connection conn = DBAccess.connection;
-             PreparedStatement stmt = conn.prepareStatement(query);
+        try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -58,5 +54,58 @@ public class DAOPatient {
         }
 
         return patients;
+    }
+
+    public static boolean addPatient(Patient patient) {
+        String query = """
+        INSERT INTO patient (
+            Vorname, Nachname, Anrede, Geburtsdatum, Strasse, PLZ, Ort, 
+            Bundesland, Telefon, GeschlechtID, Krankenkasse, Sonstiges
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    """;
+
+        try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query)) {
+
+            // Setze die Parameter für das PreparedStatement
+            stmt.setString(1, patient.getVorname());
+            stmt.setString(2, patient.getNachname());
+            stmt.setString(3, patient.getAnrede());
+            stmt.setDate(4, (patient.getGeburtsdatum() != null) ? Date.valueOf(patient.getGeburtsdatum().toString()) : null);
+            stmt.setString(5, patient.getStrasse());
+            stmt.setString(6, patient.getPlz());
+            stmt.setString(7, patient.getOrt());
+            stmt.setObject(8, patient.getBundeslandID(), Types.INTEGER);
+            stmt.setString(9, patient.getTelefon());
+            stmt.setObject(10, patient.getGeschlechtID(), Types.INTEGER);
+            stmt.setObject(11, patient.getKrankenkasseID(), Types.INTEGER);
+            stmt.setString(12, patient.getSonstiges());
+
+            // Führe das INSERT aus
+            int rowsInserted = stmt.executeUpdate();
+            return rowsInserted > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deletePatient(int patientId) {
+        String sql = "DELETE FROM patient WHERE PatientID = ?";
+
+        try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql)) {
+            // Setze die PatientID als Parameter für die SQL-Abfrage
+            statement.setInt(1, patientId);
+
+            // Führe das DELETE-Statement aus
+            int rowsAffected = statement.executeUpdate();
+
+            // Wenn mindestens eine Zeile betroffen ist, war das Löschen erfolgreich
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Fehler beim Löschen
+        }
     }
 }

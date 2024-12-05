@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class DBAccess {
 
     private static DBAccess instance;
-    private String url = "jdbc:postgresql://localhost:5432/Patient";
-    private String user = "";
-    private String password = "";
+    private static String url = "jdbc:postgresql://localhost:5432/Patient";
+    private static String user = "postgres";
+    private static String password = "root";
     public static Connection connection = null;
 
     private DBAccess() {}
@@ -30,7 +30,7 @@ public class DBAccess {
         this.password = password;
     }
 
-    public void connect()
+    public static void connect()
     {
         try {
             Class.forName("org.postgresql.Driver");
