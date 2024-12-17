@@ -1,11 +1,14 @@
 package gui;
 
+import beans.Befund;
 import beans.Patient;
+import bl.DAOBefund;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 
 public class GUIBefunde {
     private JTextField tfName;
@@ -25,9 +28,9 @@ public class GUIBefunde {
         frame.pack();
         frame.setVisible(true);
 
-        tfName.setText(p.getNachname());
+        tfName.setText(p.getNachname() + " " + p.getVorname());
 
-        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","URL"}){
+        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","URL","Datum"}){
 
             @Override
             public boolean isCellEditable(int row, int column)
@@ -44,6 +47,12 @@ public class GUIBefunde {
         header.setFont(new Font("Arial", Font.BOLD, 14));
 
         lbHeader.add(header);
+        tbBefund.getTableHeader().setReorderingAllowed(false);
+
+        for(Befund befund : DAOBefund.getBefundeByPatientID(p.getPatientID()))
+        {
+            model.addRow(new Object[]{befund.getBefundID(),befund.getPfad(),befund.getDatum().toString()});
+        }
     }
 
 

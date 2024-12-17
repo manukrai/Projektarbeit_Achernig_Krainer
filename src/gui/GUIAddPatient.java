@@ -78,8 +78,6 @@ public class GUIAddPatient {
                     }
                 }
 
-
-
                 DAOPatient.addPatient(newPatient);
 
                 gui.getAllPatientsFromDatabase();

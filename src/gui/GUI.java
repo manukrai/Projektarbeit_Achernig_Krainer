@@ -1,20 +1,15 @@
 package gui;
 
-import beans.Bundesland;
-import beans.Geschlecht;
-import beans.Krankenkasse;
 import beans.Patient;
 import bl.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Collections;
+import java.awt.event.*;
 import java.util.List;
 
 public class GUI extends JFrame
@@ -25,7 +20,9 @@ public class GUI extends JFrame
     private JTextField tfSearch;
     private JPanel panelHeader;
     private JPanel panelTable;
+    private JButton btAddPatient;
     private List<Patient>  patients;
+    TableRowSorter<TableModel> sorter;
 
     public void showPanel()
     {
@@ -50,15 +47,8 @@ public class GUI extends JFrame
 
                 if(e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) {
 
-                    if(patientTable.getValueAt(patientTable.getSelectedRow(),0) == "...") {
-                        GUIAddPatient guiAddPatient = new GUIAddPatient();
-                        guiAddPatient.showFrame(GUI.this);
 
-                        getAllPatientsFromDatabase();
-                        setTableModel();
-                    }
-                    else
-                    {
+
                         int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
 
                         GUIShowPatient showPatient = new GUIShowPatient();
@@ -68,12 +58,35 @@ public class GUI extends JFrame
                                 showPatient.editPatient(patient,GUI.this);
                             }
                         }
-                    }
+
 
 
                 }
 
                 
+            }
+        });
+        tfSearch.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                super.keyPressed(e);
+
+                String searchText = tfSearch.getText();
+                if (searchText.trim().length() == 0) {
+                    sorter.setRowFilter(null); // Filter zurücksetzen
+                } else {
+                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText)); // Filter anwenden
+                }
+            }
+        });
+        btAddPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUIAddPatient guiAddPatient = new GUIAddPatient();
+                guiAddPatient.showFrame(GUI.this);
+
+                getAllPatientsFromDatabase();
+                setTableModel();
             }
         });
     }
@@ -86,6 +99,9 @@ public class GUI extends JFrame
 
     public void setTableModel()
     {
+        setPlaceholder(tfSearch,"Suche");
+
+
         DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","Anrede","Vorname","Nachname"}){
 
             @Override
@@ -105,14 +121,14 @@ public class GUI extends JFrame
         panelHeader.add(header);
         patientTable.getTableHeader().setReorderingAllowed(false);
 
-
-
         for(Patient patient : patients)
         {
             model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname()});
         }
 
-        model.addRow(new Object[]{"...","Patient","hinzufügen","...","..."});
+        sorter = new TableRowSorter<>(patientTable.getModel());
+        patientTable.setRowSorter(sorter);
+
     }
 
     public static void main(String[] args) {
@@ -123,4 +139,37 @@ public class GUI extends JFrame
         frame.pack();
         frame.setVisible(true);
     }
+
+
+    public static void setPlaceholder(JTextField textField, String placeholder) {
+        // Placeholder-Farbe
+        Color placeholderColor = Color.GRAY;
+        Color textColor = Color.BLACK;
+
+        // Standardtext und Farbe setzen
+        textField.setText(placeholder);
+        textField.setForeground(placeholderColor);
+
+        // FocusListener hinzufügen
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Wenn der aktuelle Text der Placeholder ist -> löschen
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(textColor);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Wenn das Textfeld leer ist -> Placeholder anzeigen
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(placeholderColor);
+                }
+            }
+        });
+    }
+
 }

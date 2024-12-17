@@ -9,7 +9,7 @@ public class AccountManager {
         accounts = new HashMap<>();
         // Erstelle ein Standardkonto bei Initialisierung
         if (accounts.isEmpty()) {
-            createAccount("doctor", "doctor"); // Beispiel Standardkonto
+            createAccount("root", "root"); // Beispiel Standardkonto
         }
     }
 

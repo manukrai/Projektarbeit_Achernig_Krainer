@@ -40,10 +40,25 @@ public class GUIShowPatient {
         btDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DAOPatient.deletePatient(patient.getPatientID());
-                gui.getAllPatientsFromDatabase();
-                gui.setTableModel();
-                frame.dispose();
+
+                int result = JOptionPane.showConfirmDialog(
+                        frame,
+                        "Bist du sicher, dass du löschen möchtest?", // Nachricht
+                        "Bestätigung", // Titel
+                        JOptionPane.YES_NO_OPTION, // Optionen (Ja/Nein)
+                        JOptionPane.WARNING_MESSAGE // Symbol (Warnung)
+                );
+
+                // Reaktion auf die Auswahl
+                if (result == JOptionPane.YES_OPTION) {
+                    DAOPatient.deletePatient(patient.getPatientID());
+                    gui.getAllPatientsFromDatabase();
+                    gui.setTableModel();
+                    frame.dispose();
+                } else {
+                }
+
+
             }
         });
         btBefunde.addActionListener(new ActionListener() {
@@ -79,6 +94,7 @@ public class GUIShowPatient {
         tfPlz.setText(patient.getPlz());
         tfTelefonnummer.setText(patient.getTelefon());
         tfAnmerkung.setText(patient.getSonstiges());
+        if(patient.getGeburtsdatum() != null)
         tfGeburtsdatum.setText(patient.getGeburtsdatum().toString());
 
         for(Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter())

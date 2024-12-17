@@ -1,22 +1,25 @@
 package beans;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Befund {
     private int befundID;
     private int patientID;
     private String pfad;
-    private Date datum;
+    private LocalDate datum;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // Standard-Konstruktor
     public Befund() {}
 
     // Konstruktor mit Parametern
-    public Befund(int befundID, int patientID, String pfad, Date datum) {
+    public Befund(int befundID, int patientID, String pfad, String datum) {
         this.befundID = befundID;
         this.patientID = patientID;
         this.pfad = pfad;
-        this.datum = datum;
+        this.datum = LocalDate.parse(datum, formatter);
     }
 
     // Getter und Setter
@@ -44,12 +47,13 @@ public class Befund {
         this.pfad = pfad;
     }
 
-    public Date getDatum() {
+    public LocalDate getDatum() {
         return datum;
     }
 
-    public void setDatum(Date datum) {
-        this.datum = datum;
+    public void setDatum(String datum)
+    {
+        this.datum = LocalDate.parse(datum, formatter);
     }
 }
 
