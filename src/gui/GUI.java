@@ -6,9 +6,11 @@ import bl.DBAccess;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +25,7 @@ public class GUI extends JFrame
     private JButton btSearch;
     private JButton btSortieren;
     private JButton btAddBefund;
+    private JPanel panelHeader;
     private List<Patient>  patients;
 
 
@@ -74,7 +77,7 @@ public class GUI extends JFrame
 
     public void setTableModel()
     {
-        DefaultTableModel model = new DefaultTableModel(new String []{"ID","Anrede","Vorname","Nachname","Geburtstag","Straße","PLZ","Ort","Telefonnummer","Anmerkung"},0){
+        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","Anrede","Vorname","Nachname","Geburtstag","Straße","PLZ","Ort","Telefonnummer","Anmerkung"}){
 
             @Override
             public boolean isCellEditable(int row, int column)
@@ -84,6 +87,14 @@ public class GUI extends JFrame
         };
 
         patientTable.setModel(model);
+
+        JTableHeader header = patientTable.getTableHeader();
+        header.setAlignmentX(Component.CENTER_ALIGNMENT);
+        header.setForeground(Color.BLACK);
+        header.setFont(new Font("Arial", Font.BOLD, 14));
+
+        panelHeader.add(header);
+
 
         for(Patient patient : patients)
         {
