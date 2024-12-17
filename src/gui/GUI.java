@@ -17,22 +17,28 @@ import java.util.List;
 
 public class GUI extends JFrame
 {
+    private static JFrame frame;
     private JPanel jPanel;
-    private JButton btAdd;
-    private JButton btDelete;
     private JTable patientTable;
     private JTextField tfSearch;
-    private JButton btSearch;
-    private JButton btSortieren;
     private JPanel panelHeader;
     private List<Patient>  patients;
 
+    public void showPanel()
+    {
+        frame = new JFrame("Patient Management System");
+        frame.setContentPane(new GUI().jPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
 
-    public GUI() {
         DBAccess.connect();
         getAllPatientsFromDatabase();
         setTableModel();
+    }
 
+
+    public GUI() {
         patientTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -94,6 +100,8 @@ public class GUI extends JFrame
         header.setFont(new Font("Arial", Font.BOLD, 14));
 
         panelHeader.add(header);
+
+        patientTable.getTableHeader().setReorderingAllowed(false);
 
 
         for(Patient patient : patients)

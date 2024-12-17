@@ -1,5 +1,6 @@
 package gui;
 
+import accountManagment.AccountManager;
 import bl.DBAccess;
 
 import javax.swing.*;
@@ -12,12 +13,11 @@ public class guiLogin extends JFrame
     private static JFrame frame;
     private JButton btConnect;
     private JPanel loginPanel;
-    private JButton btCancel;
     private JTextField textUsername;
     private JPasswordField textPasswort;
 
     public static void main(String[] args) {
-        frame = new JFrame("PatientDB login");
+        frame = new JFrame("Patient Managment System");
         frame.setContentPane(new guiLogin().loginPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -30,24 +30,20 @@ public class guiLogin extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                DBAccess db = DBAccess.getInstance();
+                AccountManager accountManager = new AccountManager();
 
-                db.setUser(textUsername.getText());
-                db.setPassword(textPasswort.getText());
+                if (accountManager.login(textUsername.getText(), textPasswort.getText())) {
 
-                db.connect();
+                    GUI gui = new GUI();
 
-                if(DBAccess.connection != null)
-                {
+                    gui.showPanel();
+
                     frame.dispose();
+                } else {
+                    System.out.println("Falscher Benutzername oder Passwort.");
                 }
 
-            }
-        });
-        btCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+
             }
         });
     }
