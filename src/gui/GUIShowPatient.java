@@ -24,6 +24,7 @@ public class GUIShowPatient {
     private JButton btDelete;
     private JTextField tfID;
     private JPanel editPanel;
+    private JButton btBefunde;
 
     public GUIShowPatient() {
         btDelete.addActionListener(new ActionListener() {
@@ -37,6 +38,13 @@ public class GUIShowPatient {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
+            }
+        });
+        btBefunde.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUIBefunde showBefunde = new GUIBefunde();
+                showBefunde.showBefunde(null);
             }
         });
     }

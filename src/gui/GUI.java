@@ -24,7 +24,6 @@ public class GUI extends JFrame
     private JTextField tfSearch;
     private JButton btSearch;
     private JButton btSortieren;
-    private JButton btBefund;
     private JPanel panelHeader;
     private List<Patient>  patients;
 
@@ -56,17 +55,20 @@ public class GUI extends JFrame
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
+                if(e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) {
+                    int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
 
-                System.out.println(patientID);
+                    System.out.println(patientID);
 
-                GUIShowPatient showPatient = new GUIShowPatient();
+                    GUIShowPatient showPatient = new GUIShowPatient();
 
-                for (Patient patient : patients) {
-                    if(patient.getPatientID() == patientID) {
-                        showPatient.editPatient(patient);
+                    for (Patient patient : patients) {
+                        if(patient.getPatientID() == patientID) {
+                            showPatient.editPatient(patient);
+                        }
                     }
                 }
+
                 
             }
         });

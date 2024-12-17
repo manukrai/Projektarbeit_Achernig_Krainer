@@ -6,24 +6,38 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUIBefunde {
     private JTextField tfName;
     private JTable Table;
     private JLabel panelHeader;
     private JPanel Panel;
-    private static JFrame frame;
+    private JButton btCancel;
+    private JFrame frame;
 
 
-    public void showBefunde() {
+    public GUIBefunde() {
+        btCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+    }
+
+    public void showBefunde(Patient p) {
         frame = new JFrame("Befunde");
         frame.setContentPane(new GUIBefunde().Panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        setTableModel(p);
     }
 
-    public void setTableModel()
+    public void setTableModel(Patient p)
     {
         DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","URL"}){
 
@@ -42,7 +56,6 @@ public class GUIBefunde {
         header.setFont(new Font("Arial", Font.BOLD, 14));
 
         panelHeader.add(header);
-
     }
 
 }
