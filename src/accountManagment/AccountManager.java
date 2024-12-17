@@ -9,7 +9,7 @@ public class AccountManager {
         accounts = new HashMap<>();
         // Erstelle ein Standardkonto bei Initialisierung
         if (accounts.isEmpty()) {
-            createAccount("root", "root"); // Beispiel Standardkonto
+            createAccount("doctor", "doctor"); // Beispiel Standardkonto
         }
     }
 
@@ -22,15 +22,6 @@ public class AccountManager {
         return true;
     }
 
-    // Konto löschen
-    public boolean deleteAccount(String username) {
-        if (accounts.containsKey(username)) {
-            accounts.remove(username);
-            return true;
-        }
-        return false;
-    }
-
     // Login validieren
     public boolean login(String username, String password) {
         Account account = accounts.get(username);
@@ -40,9 +31,5 @@ public class AccountManager {
         return false;
     }
 
-    // Benutzername überprüfen
-    public boolean accountExists(String username) {
-        return accounts.containsKey(username);
-    }
 }
 

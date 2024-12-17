@@ -22,12 +22,14 @@ public class GUI extends JFrame
     private JTable patientTable;
     private JTextField tfSearch;
     private JPanel panelHeader;
+    private JPanel panelTable;
     private List<Patient>  patients;
 
     public void showPanel()
     {
+
         frame = new JFrame("Patient Management System");
-        frame.setContentPane(new GUI().jPanel);
+        frame.setContentPane(jPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -47,7 +49,8 @@ public class GUI extends JFrame
                 if(e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) {
 
                     if(patientTable.getValueAt(patientTable.getSelectedRow(),0) == "...") {
-                        GUIAddPatient.showFrame();
+                        GUIAddPatient guiAddPatient = new GUIAddPatient();
+                        guiAddPatient.showFrame(GUI.this);
 
                         getAllPatientsFromDatabase();
                         setTableModel();
@@ -56,13 +59,11 @@ public class GUI extends JFrame
                     {
                         int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
 
-                        System.out.println(patientID);
-
                         GUIShowPatient showPatient = new GUIShowPatient();
 
                         for (Patient patient : patients) {
                             if(patient.getPatientID() == patientID) {
-                                showPatient.editPatient(patient);
+                                showPatient.editPatient(patient,GUI.this);
                             }
                         }
                     }
@@ -100,7 +101,6 @@ public class GUI extends JFrame
         header.setFont(new Font("Arial", Font.BOLD, 14));
 
         panelHeader.add(header);
-
         patientTable.getTableHeader().setReorderingAllowed(false);
 
 
@@ -120,6 +120,4 @@ public class GUI extends JFrame
         frame.pack();
         frame.setVisible(true);
     }
-
-
 }

@@ -45,7 +45,7 @@ public class guiLogin extends JFrame
 
                     frame.dispose();
                 } else {
-                    System.out.println("Falscher Benutzername oder Passwort.");
+                    JOptionPane.showMessageDialog(null, "Falscher Username oder Passwort!", "Fehler", JOptionPane.ERROR_MESSAGE);
                 }
 
 

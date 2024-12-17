@@ -1,6 +1,10 @@
 package beans;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 public class Patient implements Comparable<Patient>
@@ -9,7 +13,7 @@ public class Patient implements Comparable<Patient>
     private String vorname;
     private String nachname;
     private String anrede;
-    private Date geburtsdatum;
+    private LocalDate geburtsdatum;
     private String strasse;
     private String plz;
     private String ort;
@@ -18,18 +22,19 @@ public class Patient implements Comparable<Patient>
     private int geschlechtID;
     private int krankenkasseID;
     private String sonstiges;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // Standard-Konstruktor
     public Patient() {}
 
     // Konstruktor mit Parametern
-    public Patient(int patientID, String vorname, String nachname, String anrede, Date geburtsdatum, String strasse,
+    public Patient(int patientID, String vorname, String nachname, String anrede, String geburtsdatum, String strasse,
                    String plz, String ort, int bundesland, String telefon, int geschlechtID, int krankenkasse, String sonstiges) {
         this.patientID = patientID;
         this.vorname = vorname;
         this.nachname = nachname;
         this.anrede = anrede;
-        this.geburtsdatum = geburtsdatum;
+        this.geburtsdatum = LocalDate.parse(geburtsdatum.toString(), formatter);
         this.strasse = strasse;
         this.plz = plz;
         this.ort = ort;
@@ -73,12 +78,13 @@ public class Patient implements Comparable<Patient>
         this.anrede = anrede;
     }
 
-    public Date getGeburtsdatum() {
+    public LocalDate getGeburtsdatum() {
         return geburtsdatum;
     }
 
-    public void setGeburtsdatum(Date geburtsdatum) {
-        this.geburtsdatum = geburtsdatum;
+    public void setGeburtsdatum(String geburtsdatum) throws DateTimeParseException
+    {
+        this.geburtsdatum = LocalDate.parse(geburtsdatum, formatter);
     }
 
     public String getStrasse() {

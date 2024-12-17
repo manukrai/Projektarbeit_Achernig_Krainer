@@ -3,12 +3,15 @@ package bl;
 import beans.Patient;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
 public class DAOPatient {
 
-    // Alle Patienten abrufen
+
     public static List<Patient> getAllPatients() {
         List<Patient> patients = new LinkedList<>();
         String query = """
@@ -24,6 +27,8 @@ public class DAOPatient {
             LEFT JOIN krankenkasse k ON p.Krankenkasse = k.KrankenkasseID;
         """;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -34,7 +39,8 @@ public class DAOPatient {
                 patient.setVorname(rs.getString("Vorname"));
                 patient.setNachname(rs.getString("Nachname"));
                 patient.setAnrede(rs.getString("Anrede"));
-                patient.setGeburtsdatum(rs.getDate("Geburtsdatum"));
+                if(rs.getString("geburtsdatum")!=null)
+                patient.setGeburtsdatum(rs.getString("Geburtsdatum"));
                 patient.setStrasse(rs.getString("Strasse"));
                 patient.setPlz(rs.getString("PLZ"));
                 patient.setOrt(rs.getString("Ort"));
@@ -70,7 +76,15 @@ public class DAOPatient {
             stmt.setString(1, patient.getVorname());
             stmt.setString(2, patient.getNachname());
             stmt.setString(3, patient.getAnrede());
-            stmt.setDate(4, (patient.getGeburtsdatum() != null) ? Date.valueOf(patient.getGeburtsdatum().toString()) : null);
+            System.out.println(patient.getGeburtsdatum());
+            if(patient.getGeburtsdatum()!=null)
+            {
+                stmt.setDate(4, Date.valueOf(patient.getGeburtsdatum()));
+            }
+            else
+            {
+                stmt.setNull(4, java.sql.Types.DATE);
+            }
             stmt.setString(5, patient.getStrasse());
             stmt.setString(6, patient.getPlz());
             stmt.setString(7, patient.getOrt());

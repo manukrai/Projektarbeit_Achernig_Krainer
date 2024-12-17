@@ -6,6 +6,11 @@ import bl.DAOPatient;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 public class GUIAddPatient {
     private static JFrame frame;
@@ -21,19 +26,19 @@ public class GUIAddPatient {
     private JButton btCancel;
     private JPanel addPanel;
     private JTextField tfOrt;
+    private GUI gui;
 
 
     public GUIAddPatient() {
         btAdd.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-
+            public void actionPerformed(ActionEvent e)
+            {
                 Patient newPatient = new Patient();
 
                 newPatient.setVorname(tfVorname.getText());
                 newPatient.setNachname(tfNachname.getText());
                 newPatient.setAnrede(cbGeschlecht.getSelectedItem().toString());
-                newPatient.setGeburtsdatum(null);
                 newPatient.setStrasse(tfStrasse.getText());
                 newPatient.setPlz(tfPlz.getText());
                 newPatient.setOrt(tfOrt.getText());
@@ -42,18 +47,32 @@ public class GUIAddPatient {
                 newPatient.setGeschlechtID(2);
                 newPatient.setKrankenkasseID(2);
                 newPatient.setSonstiges(tfAnmerkung.getText());
+                DAOPatient.addPatient(newPatient);
 
+                try
+                {
+                    newPatient.setGeburtsdatum(tfGeburtsdatum.getText());
+                }
+                catch(DateTimeParseException ex)
+                {
+                    JOptionPane.showMessageDialog(frame, "Datums Format nicht passend!");
+                }
 
                 DAOPatient.addPatient(newPatient);
+
+                gui.getAllPatientsFromDatabase();
+                gui.setTableModel();
                 frame.dispose();
             }
         });
     }
 
-    public static void showFrame()
+    public void showFrame(GUI gui)
     {
+        this.gui = gui;
+
         frame = new JFrame("Patient hinzufügen");
-        frame.setContentPane(new GUIAddPatient().addPanel);
+        frame.setContentPane(addPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

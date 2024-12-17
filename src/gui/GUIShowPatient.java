@@ -24,12 +24,16 @@ public class GUIShowPatient {
     private JTextField tfID;
     private JPanel editPanel;
     private JButton btBefunde;
+    private GUI gui;
+    private Patient patient;
 
     public GUIShowPatient() {
         btDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DAOPatient.deletePatient(91);
+                DAOPatient.deletePatient(patient.getPatientID());
+                gui.getAllPatientsFromDatabase();
+                gui.setTableModel();
                 frame.dispose();
             }
         });
@@ -37,25 +41,26 @@ public class GUIShowPatient {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIBefunde showBefunde = new GUIBefunde();
-                showBefunde.showBefunde(null);
+                showBefunde.showBefunde(patient);
             }
         });
     }
 
 
-    public void editPatient(Patient patient) {
+    public void editPatient(Patient patient,GUI gui) {
+        this.patient = patient;
+        this.gui = gui;
 
         frame = new JFrame("Patient bearbeiten");
-        frame.setContentPane(new GUIShowPatient().editPanel);
+        frame.setContentPane(editPanel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 
-        setTextFields(patient);
-
+        setTextFields();
     }
 
-    public void setTextFields(Patient patient)
+    public void setTextFields()
     {
         tfID.setText(String.valueOf(patient.getPatientID()));
         tfVorname.setText(patient.getVorname());
@@ -65,6 +70,7 @@ public class GUIShowPatient {
         tfPlz.setText(patient.getPlz());
         tfTelefonnummer.setText(patient.getTelefon());
         tfAnmerkung.setText(patient.getSonstiges());
+        tfGeburtsdatum.setText(patient.getGeburtsdatum().toString());
     }
 
 }
