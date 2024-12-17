@@ -15,7 +15,7 @@ public class GUIBefunde {
     private static JFrame frame;
 
 
-    public GUIBefunde() {
+    public void showBefunde() {
         frame = new JFrame("Befunde");
         frame.setContentPane(new GUIBefunde().Panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,8 +42,6 @@ public class GUIBefunde {
         header.setFont(new Font("Arial", Font.BOLD, 14));
 
         panelHeader.add(header);
-
-
 
     }
 
