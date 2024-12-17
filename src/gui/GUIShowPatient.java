@@ -1,4 +1,18 @@
 package gui;
 
+import javax.swing.*;
+
 public class GUIShowPatient {
+    private JLabel Geschlecht;
+    private JComboBox cbGeschlecht;
+    private JButton btCancel;
+    private JTextField tfVorname;
+    private JTextField tfNachname;
+    private JTextField tfGeburtsdatum;
+    private JTextField tfStrasse;
+    private JTextField tfOrt;
+    private JTextField tfPlz;
+    private JTextField tfTelefonnummer;
+    private JTextField tfAnmerkung;
+    private JButton btSave;
 }
