@@ -1,11 +1,10 @@
 package gui;
 
+import bl.DBAccess;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 
 public class guiLogin extends JFrame
@@ -30,29 +29,17 @@ public class guiLogin extends JFrame
         btConnect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String url = "jdbc:postgresql://localhost:5432/Patient";
-                String user = textUsername.getText();
-                String password = textPasswort.getText();
 
-                try {
-                    Class.forName("org.postgresql.Driver");
-                } catch (ClassNotFoundException ex) {
-                    System.out.println(ex);
-                }
+                DBAccess db = DBAccess.getInstance();
 
-                try {
-                    Connection connection = DriverManager.getConnection(url, user, password);
+                db.setUser(textUsername.getText());
+                db.setPassword(textPasswort.getText());
 
-                    if(connection != null) {
-                        System.out.println("Connected to PostgreSQL database");
+                db.connect();
 
-                        GUI secondForm = new GUI();
-                        secondForm.setVisible(true);
-                        frame.dispose();
-                    }
-
-                } catch (SQLException ex) {
-                    System.out.println(ex);
+                if(DBAccess.connection != null)
+                {
+                    frame.dispose();
                 }
 
             }
