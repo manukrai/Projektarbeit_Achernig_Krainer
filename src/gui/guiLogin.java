@@ -15,6 +15,7 @@ public class guiLogin extends JFrame
     private JPanel loginPanel;
     private JTextField textUsername;
     private JPasswordField textPasswort;
+    private JLabel lbImage;
 
     public static void main(String[] args) {
         frame = new JFrame("Patient Managment System");
@@ -26,6 +27,10 @@ public class guiLogin extends JFrame
 
 
     public guiLogin() {
+
+        ImageIcon imageIcon = new ImageIcon("/Users/manuel.krainer/IntelliJ/Projektarbeit_Achernig_Krainer/src/pictures/img_1.png");
+        lbImage.setIcon(imageIcon);
+
         btConnect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
