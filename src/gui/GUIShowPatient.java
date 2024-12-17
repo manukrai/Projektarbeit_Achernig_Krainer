@@ -29,7 +29,7 @@ public class GUIShowPatient {
         btDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DAOPatient.deletePatient(Integer.parseInt(tfID.getText()));
+                DAOPatient.deletePatient(91);
                 frame.dispose();
             }
         });
@@ -44,7 +44,7 @@ public class GUIShowPatient {
 
     public void editPatient(Patient patient) {
 
-        frame = new JFrame("Patient hinzufügen");
+        frame = new JFrame("Patient bearbeiten");
         frame.setContentPane(new GUIShowPatient().editPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
