@@ -1,5 +1,7 @@
 package gui;
 
+import beans.Patient;
+
 import javax.swing.*;
 
 public class GUIShowPatient {
@@ -15,4 +17,12 @@ public class GUIShowPatient {
     private JTextField tfTelefonnummer;
     private JTextField tfAnmerkung;
     private JButton btSave;
+
+    public void editPatient(Patient patient)
+    {
+        tfVorname.setText(patient.getVorname());
+
+    }
+
 }
+

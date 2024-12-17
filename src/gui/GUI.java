@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.util.Collection;
+import java.awt.event.MouseEvent;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class GUI extends JFrame
     private JTextField tfSearch;
     private JButton btSearch;
     private JButton btSortieren;
-    private JButton btAddBefund;
+    private JButton btBefund;
     private JPanel panelHeader;
     private List<Patient>  patients;
 
@@ -64,6 +64,17 @@ public class GUI extends JFrame
             public void actionPerformed(ActionEvent e) {
                 Collections.sort(patients);
                 setTableModel();
+            }
+        });
+        patientTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
+
+                System.out.println(patientID);
+                
             }
         });
     }
