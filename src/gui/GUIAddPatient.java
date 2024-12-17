@@ -24,12 +24,6 @@ public class GUIAddPatient {
 
 
     public GUIAddPatient() {
-        btCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
         btAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +54,7 @@ public class GUIAddPatient {
     {
         frame = new JFrame("Patient hinzufügen");
         frame.setContentPane(new GUIAddPatient().addPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }

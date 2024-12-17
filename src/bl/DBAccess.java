@@ -41,6 +41,17 @@ public class DBAccess {
         try {
             connection = DriverManager.getConnection(url, user, password);
 
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                try {
+                    if (connection != null && !connection.isClosed()) {
+                        connection.close();
+                        System.out.println("Verbindung durch Shutdown-Hook geschlossen.");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }));
+
         } catch (SQLException ex) {
             System.out.println(ex);
         }

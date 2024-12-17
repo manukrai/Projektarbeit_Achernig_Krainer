@@ -11,7 +11,6 @@ public class GUIShowPatient {
     private static JFrame frame;
     private JLabel Geschlecht;
     private JComboBox cbGeschlecht;
-    private JButton btCancel;
     private JTextField tfVorname;
     private JTextField tfNachname;
     private JTextField tfGeburtsdatum;
@@ -34,12 +33,6 @@ public class GUIShowPatient {
                 frame.dispose();
             }
         });
-        btCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
         btBefunde.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,7 +47,7 @@ public class GUIShowPatient {
 
         frame = new JFrame("Patient bearbeiten");
         frame.setContentPane(new GUIShowPatient().editPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 

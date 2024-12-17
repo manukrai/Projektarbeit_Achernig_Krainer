@@ -92,14 +92,6 @@
           <text value="Anmerkung"/>
         </properties>
       </component>
-      <component id="d70e4" class="javax.swing.JButton" binding="btCancel">
-        <constraints>
-          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Abbrechen"/>
-        </properties>
-      </component>
       <component id="4533" class="javax.swing.JTextField" binding="tfVorname">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">

@@ -14,23 +14,16 @@ public class GUIBefunde {
     private JTable Table;
     private JLabel panelHeader;
     private JPanel Panel;
-    private JButton btCancel;
     private JFrame frame;
 
 
     public GUIBefunde() {
-        btCancel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-            }
-        });
     }
 
     public void showBefunde(Patient p) {
         frame = new JFrame("Befunde");
         frame.setContentPane(new GUIBefunde().Panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
 

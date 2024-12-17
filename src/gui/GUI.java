@@ -33,40 +33,35 @@ public class GUI extends JFrame
         getAllPatientsFromDatabase();
         setTableModel();
 
-
-        btAdd.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GUIAddPatient.showFrame();
-
-                getAllPatientsFromDatabase();
-                setTableModel();
-            }
-        });
-        btSortieren.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Collections.sort(patients);
-                setTableModel();
-            }
-        });
         patientTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
                 if(e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) {
-                    int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
 
-                    System.out.println(patientID);
+                    if(patientTable.getValueAt(patientTable.getSelectedRow(),0) == "...") {
+                        GUIAddPatient.showFrame();
 
-                    GUIShowPatient showPatient = new GUIShowPatient();
+                        getAllPatientsFromDatabase();
+                        setTableModel();
+                    }
+                    else
+                    {
+                        int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
 
-                    for (Patient patient : patients) {
-                        if(patient.getPatientID() == patientID) {
-                            showPatient.editPatient(patient);
+                        System.out.println(patientID);
+
+                        GUIShowPatient showPatient = new GUIShowPatient();
+
+                        for (Patient patient : patients) {
+                            if(patient.getPatientID() == patientID) {
+                                showPatient.editPatient(patient);
+                            }
                         }
                     }
+
+
                 }
 
                 
@@ -105,6 +100,8 @@ public class GUI extends JFrame
         {
             model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname(),patient.getGeburtsdatum(),patient.getStrasse(),patient.getPlz(),patient.getOrt(),patient.getTelefon(),patient.getSonstiges()});
         }
+
+        model.addRow(new Object[]{"...","...","...","...","Patient","hinzufügen","...","...","...","..."});
     }
 
     public static void main(String[] args) {
