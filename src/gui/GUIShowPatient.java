@@ -50,6 +50,13 @@ public class GUIShowPatient {
         frame.pack();
         frame.setVisible(true);
 
+        setTextFields(patient);
+
+    }
+
+    public void setTextFields(Patient patient)
+    {
+        tfID.setText(String.valueOf(patient.getPatientID()));
         tfVorname.setText(patient.getVorname());
         tfNachname.setText(patient.getNachname());
         tfStrasse.setText(patient.getStrasse());
