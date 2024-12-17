@@ -21,8 +21,12 @@ public class GUIShowPatient {
     public void editPatient(Patient patient)
     {
         tfVorname.setText(patient.getVorname());
-
-    }
+        tfNachname.setText(patient.getNachname());
+        tfStrasse.setText(patient.getStrasse());
+        tfOrt.setText(patient.getOrt());
+        tfPlz.setText(patient.getOrt());
+        tfTelefonnummer.setText(patient.getTelefon());
+        tfAnmerkung.setText(patient.getSonstiges());
 
 }
 
