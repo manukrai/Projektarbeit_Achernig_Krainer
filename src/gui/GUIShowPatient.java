@@ -17,6 +17,7 @@ public class GUIShowPatient {
     private JTextField tfTelefonnummer;
     private JTextField tfAnmerkung;
     private JButton btSave;
+    private JButton btDelete;
 
     public void editPatient(Patient patient)
     {
