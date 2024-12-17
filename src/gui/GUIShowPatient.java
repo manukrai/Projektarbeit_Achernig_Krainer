@@ -1,10 +1,14 @@
 package gui;
 
 import beans.Patient;
+import bl.DAOPatient;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class GUIShowPatient {
+    private static JFrame frame;
     private JLabel Geschlecht;
     private JComboBox cbGeschlecht;
     private JButton btCancel;
@@ -18,16 +22,42 @@ public class GUIShowPatient {
     private JTextField tfAnmerkung;
     private JButton btSave;
     private JButton btDelete;
+    private JTextField tfID;
+    private JPanel editPanel;
 
-    public void editPatient(Patient patient)
-    {
+    public GUIShowPatient() {
+        btDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DAOPatient.deletePatient(Integer.parseInt(tfID.getText()));
+                frame.dispose();
+            }
+        });
+        btCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
+    }
+
+
+    public void editPatient(Patient patient) {
+
+        frame = new JFrame("Patient hinzufügen");
+        frame.setContentPane(new GUIShowPatient().editPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+
         tfVorname.setText(patient.getVorname());
         tfNachname.setText(patient.getNachname());
         tfStrasse.setText(patient.getStrasse());
         tfOrt.setText(patient.getOrt());
-        tfPlz.setText(patient.getOrt());
+        tfPlz.setText(patient.getPlz());
         tfTelefonnummer.setText(patient.getTelefon());
         tfAnmerkung.setText(patient.getSonstiges());
+    }
 
 }
 

@@ -74,6 +74,14 @@ public class GUI extends JFrame
                 int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
 
                 System.out.println(patientID);
+
+                GUIShowPatient showPatient = new GUIShowPatient();
+
+                for (Patient patient : patients) {
+                    if(patient.getPatientID() == patientID) {
+                        showPatient.editPatient(patient);
+                    }
+                }
                 
             }
         });
