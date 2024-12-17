@@ -1,7 +1,13 @@
 package gui;
 
+import beans.Bundesland;
 import beans.Patient;
+import bl.DAOBundesland;
+import bl.DAOGeschlecht;
+import bl.DAOKrankenkasse;
 import bl.DAOPatient;
+import beans.Geschlecht;
+import beans.Krankenkasse;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,7 +16,7 @@ import java.awt.event.ActionListener;
 public class GUIShowPatient {
     private static JFrame frame;
     private JLabel Geschlecht;
-    private JComboBox cbGeschlecht;
+    private JComboBox cbAnrede;
     private JTextField tfVorname;
     private JTextField tfNachname;
     private JTextField tfGeburtsdatum;
@@ -24,6 +30,9 @@ public class GUIShowPatient {
     private JTextField tfID;
     private JPanel editPanel;
     private JButton btBefunde;
+    private JComboBox cbGeschlecht;
+    private JComboBox cbKrankenkasse;
+    private JTextField tfBundesland;
     private GUI gui;
     private Patient patient;
 
@@ -71,6 +80,30 @@ public class GUIShowPatient {
         tfTelefonnummer.setText(patient.getTelefon());
         tfAnmerkung.setText(patient.getSonstiges());
         tfGeburtsdatum.setText(patient.getGeburtsdatum().toString());
+
+        for(Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter())
+        {
+            cbGeschlecht.addItem(geschlecht.getBezeichnung());
+
+            if(geschlecht.getGeschlechtID() == patient.getGeschlechtID())
+                cbGeschlecht.setSelectedItem(geschlecht.getBezeichnung());
+        }
+
+        for(Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen())
+        {
+            cbKrankenkasse.addItem(krankenkasse.getBezeichnung());
+
+            if(krankenkasse.getKrankenkasseID() == patient.getKrankenkasseID())
+                cbKrankenkasse.setSelectedItem(krankenkasse.getBezeichnung());
+        }
+
+        for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
+        {
+            if(bundesland.getBundeslandID() == patient.getBundeslandID())
+                tfBundesland.setText(bundesland.getBezeichnung());
+        }
+
+        cbAnrede.setSelectedItem(patient.getAnrede());
     }
 
 }

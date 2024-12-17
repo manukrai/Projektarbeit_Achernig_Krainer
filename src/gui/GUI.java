@@ -1,8 +1,10 @@
 package gui;
 
+import beans.Bundesland;
+import beans.Geschlecht;
+import beans.Krankenkasse;
 import beans.Patient;
-import bl.DAOPatient;
-import bl.DBAccess;
+import bl.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -84,7 +86,7 @@ public class GUI extends JFrame
 
     public void setTableModel()
     {
-        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","Anrede","Vorname","Nachname","Geburtstag","Straße","PLZ","Ort","Telefonnummer","Anmerkung"}){
+        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","Anrede","Vorname","Nachname"}){
 
             @Override
             public boolean isCellEditable(int row, int column)
@@ -104,12 +106,13 @@ public class GUI extends JFrame
         patientTable.getTableHeader().setReorderingAllowed(false);
 
 
+
         for(Patient patient : patients)
         {
-            model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname(),patient.getGeburtsdatum(),patient.getStrasse(),patient.getPlz(),patient.getOrt(),patient.getTelefon(),patient.getSonstiges()});
+            model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname()});
         }
 
-        model.addRow(new Object[]{"...","...","...","...","Patient","hinzufügen","...","...","...","..."});
+        model.addRow(new Object[]{"...","Patient","hinzufügen","...","..."});
     }
 
     public static void main(String[] args) {

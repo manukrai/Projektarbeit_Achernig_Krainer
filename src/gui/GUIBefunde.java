@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class GUIBefunde {
     private JTextField tfName;
-    private JTable Table;
-    private JLabel panelHeader;
+    private JTable tbBefund;
+    private JLabel lbHeader;
     private JPanel panelBefund;
     private JFrame frame;
 
@@ -36,15 +36,14 @@ public class GUIBefunde {
             }
         };
 
-        Table.setModel(model);
+        tbBefund.setModel(model);
 
-        JTableHeader header = Table.getTableHeader();
+        JTableHeader header = tbBefund.getTableHeader();
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
         header.setForeground(Color.BLACK);
         header.setFont(new Font("Arial", Font.BOLD, 14));
 
-        panelHeader.add(header);
-
+        lbHeader.add(header);
     }
 
 
