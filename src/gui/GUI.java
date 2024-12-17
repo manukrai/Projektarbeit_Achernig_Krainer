@@ -44,21 +44,6 @@ public class GUI extends JFrame
                 setTableModel();
             }
         });
-        btDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                int[] indexes = patientTable.getSelectedRows();
-
-                if(indexes != null && indexes.length > 0) {
-                    for (int index : indexes) {
-                        DAOPatient.deletePatient((Integer) patientTable.getValueAt(index,0));
-                    }
-                    getAllPatientsFromDatabase();
-                    setTableModel();
-                }
-            }
-        });
         btSortieren.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,7 +75,6 @@ public class GUI extends JFrame
     public void getAllPatientsFromDatabase()
     {
         DAOPatient dao = new DAOPatient();
-
         patients = dao.getAllPatients();
     }
 
@@ -120,8 +104,6 @@ public class GUI extends JFrame
             model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname(),patient.getGeburtsdatum(),patient.getStrasse(),patient.getPlz(),patient.getOrt(),patient.getTelefon(),patient.getSonstiges()});
         }
     }
-
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Patient Managment System");
