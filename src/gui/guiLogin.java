@@ -7,7 +7,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
+/**
+ * Klasse implementiert die grafische Benutzeroberfläche für Login eines Patient Management Systems
+ * Benutzer können ihre Anmeldedaten eingeben um Zugriff auf die Hauptanwendung zu erhalten
+ * Bei flaschen Eingaben wird Fehlermeldung angezeigt
+ */
 public class guiLogin extends JFrame
 {
     private static JFrame frame;
@@ -17,6 +21,11 @@ public class guiLogin extends JFrame
     private JPasswordField textPasswort;
     private JLabel lbImage;
 
+    /**
+     * Einstiegspunkt für die Anwendung
+     * Startet Login-Fenster und initialisiert GUI
+     * @param args Kommandozeilenargumente (nicht verwendet)
+     */
     public static void main(String[] args) {
         frame = new JFrame("Patient Managment System");
         frame.setContentPane(new guiLogin().loginPanel);
@@ -25,7 +34,10 @@ public class guiLogin extends JFrame
         frame.setVisible(true);
     }
 
-
+    /**
+     * Konstruktor für Klasse guiLogin
+     * Initialisiert GUI-Komponenten, setzt Bild im Fenster und fügt Login:Logik hinzu
+     */
     public guiLogin() {
 
         ImageIcon imageIcon = new ImageIcon("/Users/manuel.krainer/IntelliJ/Projektarbeit_Achernig_Krainer/src/pictures/img_1.png");

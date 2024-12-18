@@ -1,3 +1,7 @@
+/**
+ * Klasse repräsentiert die GUI für die Anzeige und Bearbeitung von Patientendaten
+ * Umfasst Funktionen zum Speichern, Löschen und Bearbeiten der Patientendaten
+ */
 package gui;
 
 import beans.Bundesland;
@@ -14,6 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class GUIShowPatient {
+    /**
+     * Hauptfenster der GUI
+     */
     private static JFrame frame;
     private JLabel Geschlecht;
     private JComboBox cbAnrede;
@@ -36,6 +43,9 @@ public class GUIShowPatient {
     private GUI gui;
     private Patient patient;
 
+    /**
+     * Konstruktor zur Initialisierung der GUI und ihrer Komponenten
+     */
     public GUIShowPatient() {
         btDelete.addActionListener(new ActionListener() {
             @Override
@@ -135,7 +145,11 @@ public class GUIShowPatient {
         });
     }
 
-
+    /**
+     * Öffnet GUI zur Bearbeitung der Daten des angegebenen Patienten
+     * @param patient Patient, dessen Daten bearbeitet werden sollen
+     * @param gui Haupt-GUI-Instanz
+     */
     public void editPatient(Patient patient,GUI gui) {
         this.patient = patient;
         this.gui = gui;
@@ -149,6 +163,9 @@ public class GUIShowPatient {
         setTextFields();
     }
 
+    /**
+     * Füllt Eingabefelder mit aktuellen Daten des Patienten
+     */
     public void setTextFields()
     {
         tfID.setText(String.valueOf(patient.getPatientID()));

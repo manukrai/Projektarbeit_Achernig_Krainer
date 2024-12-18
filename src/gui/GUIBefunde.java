@@ -14,6 +14,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.LocalDate;
 
+/**
+ * Klasse implementiert die GUI für die Anzeige und das Hinzufügen von Befunden zu einem Patienten
+ * Benutzer kann bestehende Befunde eines Patienten anzeigen lassen und neue Befunde hinzufügen
+ */
 public class GUIBefunde {
     private JTextField tfName;
     private JTable tbBefund;
@@ -24,7 +28,10 @@ public class GUIBefunde {
     private JFrame frame;
     private Patient patient;
 
-
+    /**
+     * Konstruktor für die Klasse GUIBefunde
+     * Fügt ActionListener zum Button hinzu um neue Befunde hinzuzufügen
+     */
     public GUIBefunde() {
         btAddBefund.addActionListener(new ActionListener() {
             @Override
@@ -39,6 +46,10 @@ public class GUIBefunde {
         });
     }
 
+    /**
+     * Aktualisiert die Tabelle mit den Befunden des Patienten
+     * Holt die Befunddaten aus der Datenbank und zeigt sie in der JTable an
+     */
     public void updateTable()
     {
         DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","URL","Datum"}){
@@ -66,6 +77,10 @@ public class GUIBefunde {
         }
     }
 
+    /**
+     * Zeigt GUI zur Anzeige und Bearbeitung der Befunde eines Patienten an
+     * @param p Das Patientenobjekt dessen Befund angezeigt werden sollen
+     */
     public void showBefunde(Patient p) {
         frame = new JFrame("Befunde");
         frame.setContentPane(panelBefund);
@@ -84,6 +99,12 @@ public class GUIBefunde {
 
     }
 
+    /**
+     * Setzt einen Placeholder-Text in ein JTextField
+     * Placeholder-Text wird angezeigt, solange das Textfeld leer ist
+     * @param textField Das JText-Field, in dem der Placeholder angezeigt werden soll
+     * @param placeholder Der Placeholder-Text
+     */
     public static void setPlaceholder(JTextField textField, String placeholder) {
         // Placeholder-Farbe
         Color placeholderColor = Color.GRAY;

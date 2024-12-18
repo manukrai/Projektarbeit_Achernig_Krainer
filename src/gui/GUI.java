@@ -12,6 +12,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 
+/**
+ * Die Klasse implementiert das Hauptfenster der Patientenverwaltung
+ * Sie enthält eine grafische Benutzeroberfläche zur Anzeige und Verwaltung von Patientenformationen
+ */
 public class GUI extends JFrame
 {
     private static JFrame frame;
@@ -23,6 +27,11 @@ public class GUI extends JFrame
     private JButton btAddPatient;
     private List<Patient>  patients;
     TableRowSorter<TableModel> sorter;
+
+    /**
+     * Zeigt Hauptfenster der Anwendung
+     * Stellt Verbindung zur Datenbank her und lädt alle Patienten in die Tabelle
+     */
 
     public void showPanel()
     {
@@ -38,8 +47,14 @@ public class GUI extends JFrame
         setTableModel();
     }
 
+    /**
+     * Konstruktor initialisiert dei grafischen Komponenten und fügt Listener für Benutzerinteraktionen hinzu
+     */
 
     public GUI() {
+        /**
+         * Mouse-Listener für die Tabelle
+         */
         patientTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -66,6 +81,9 @@ public class GUI extends JFrame
                 
             }
         });
+        /**
+         * Key-Listener für die Suchfunktion im Textfeld
+         */
         tfSearch.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -91,12 +109,18 @@ public class GUI extends JFrame
         });
     }
 
+    /**
+     * Lädt alle Patienten aus der Datenbank in die Patientenliste
+     */
     public void getAllPatientsFromDatabase()
     {
         DAOPatient dao = new DAOPatient();
         patients = dao.getAllPatients();
     }
 
+    /**
+     * Setzt das Tabellenmodell für dei Patiententabelle und lädt die Patientendaten in die Tabelle
+     */
     public void setTableModel()
     {
         setPlaceholder(tfSearch,"Suche");
@@ -130,6 +154,10 @@ public class GUI extends JFrame
 
     }
 
+    /**
+     * Startet die Anwendung und zeigt das Hauptfenster
+     * @param args Die Kommandozeilenargumente
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Patient Managment System");
         frame.setMinimumSize(new Dimension(1000,200));
@@ -139,7 +167,11 @@ public class GUI extends JFrame
         frame.setVisible(true);
     }
 
-
+    /**
+     * Setzt einen Platzhalter-Text in ein Textfeld
+     * @param textField Textfeld, in dem der Platzhalter angezeigt wird
+     * @param placeholder Der anzuzeigende Platzhalter-Text
+     */
     public static void setPlaceholder(JTextField textField, String placeholder) {
         // Placeholder-Farbe
         Color placeholderColor = Color.GRAY;

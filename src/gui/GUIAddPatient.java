@@ -15,6 +15,10 @@ import java.awt.event.ActionListener;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+/**
+ * Klasse implementiert GUI fpr das Hinzufügen eines neuen Patienten
+ * Benutzer kann über Textfelder und Auswahlboxen die Patientendaten eingeben und speichern
+ */
 public class GUIAddPatient {
     private static JFrame frame;
     private JTextField tfVorname;
@@ -34,7 +38,9 @@ public class GUIAddPatient {
     private JComboBox cbKrankenkasse;
     private GUI gui;
 
-
+    /**
+     * Konstruktor fügt ActionListener für den Hinzufügen- Button hinzu, um Patienten zu erfassen und zu speichern
+     */
     public GUIAddPatient() {
         btAdd.addActionListener(new ActionListener() {
             @Override
@@ -112,6 +118,10 @@ public class GUIAddPatient {
         });
     }
 
+    /**
+     * Zeigt das Fenster zum Hinzufügen eines Patienten an
+     * @param gui Referenz zur Haupt-GUI, um die Patiententabelle nach dem Hinzufügen zu aktualisieren.
+     */
     public void showFrame(GUI gui)
     {
         this.gui = gui;
