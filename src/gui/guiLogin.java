@@ -19,7 +19,6 @@ public class guiLogin extends JFrame
     private JPanel loginPanel;
     private JTextField textUsername;
     private JPasswordField textPasswort;
-    private JLabel lbImage;
 
     /**
      * Einstiegspunkt für die Anwendung
@@ -39,9 +38,6 @@ public class guiLogin extends JFrame
      * Initialisiert GUI-Komponenten, setzt Bild im Fenster und fügt Login:Logik hinzu
      */
     public guiLogin() {
-
-        ImageIcon imageIcon = new ImageIcon("/Users/manuel.krainer/IntelliJ/Projektarbeit_Achernig_Krainer/src/pictures/img_1.png");
-        lbImage.setIcon(imageIcon);
 
         btConnect.addActionListener(new ActionListener() {
             @Override
