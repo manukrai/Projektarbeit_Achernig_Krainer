@@ -50,7 +50,6 @@ public class GUI extends JFrame
     /**
      * Konstruktor initialisiert dei grafischen Komponenten und fügt Listener für Benutzerinteraktionen hinzu
      */
-
     public GUI() {
         /**
          * Mouse-Listener für die Tabelle
@@ -154,19 +153,6 @@ public class GUI extends JFrame
         sorter = new TableRowSorter<>(patientTable.getModel());
         patientTable.setRowSorter(sorter);
 
-    }
-
-    /**
-     * Startet die Anwendung und zeigt das Hauptfenster
-     * @param args Die Kommandozeilenargumente
-     */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Patient Managment System");
-        frame.setMinimumSize(new Dimension(1000,200));
-        frame.setContentPane(new GUI().jPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
     }
 
     /**
