@@ -134,7 +134,6 @@ public class GUI extends JFrame
             }
         };
 
-        patientTable.setModel(model);
 
         JTableHeader header = patientTable.getTableHeader();
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -148,6 +147,9 @@ public class GUI extends JFrame
         {
             model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname()});
         }
+
+
+        patientTable.setModel(model);
 
         sorter = new TableRowSorter<>(patientTable.getModel());
         patientTable.setRowSorter(sorter);

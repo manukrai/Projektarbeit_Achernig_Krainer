@@ -15,8 +15,12 @@ public class DBAccess {
 
     private DBAccess() {}
 
-    public static DBAccess getInstance() { // public method, call out by code
-        if (instance == null) { // only if no instance exists, then create a new
+    /**
+     * Erstellt die Instance mit dem Singleton Pattern.
+     * @return Die erstellte Instance
+     */
+    public static DBAccess getInstance() {
+        if (instance == null) {
             instance = new DBAccess();
         }
         return instance;
@@ -30,6 +34,9 @@ public class DBAccess {
         this.password = password;
     }
 
+    /**
+     * Verbindet zu der Datenbank.
+     */
     public static void connect()
     {
         try {
@@ -55,18 +62,5 @@ public class DBAccess {
             System.out.println(ex);
         }
     }
-
-    public void disconnect()
-    {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        connection = null;
-    }
-
-
-
 
 }

@@ -12,6 +12,11 @@ import java.sql.*;
 
 public class DAOBefund {
 
+    /**
+     * Hier bekommt man die Befunde welche zu einem Patienten gehören.
+     * @param patientID
+     * @return eine Liste aller Befunden, welche mit dem Patient verbunden sind.
+     */
     public static List<Befund> getBefundeByPatientID(int patientID) {
         List<Befund> liste = new ArrayList<>();
         String query = "SELECT BefundID, PatientID, Pfad, Datum FROM befund WHERE PatientID = ?";
@@ -37,6 +42,12 @@ public class DAOBefund {
         return liste;
     }
 
+    /**
+     * Fügt einen neuen Befund einem Patienten hinzu
+     * @param patientID
+     * @param pfad
+     * @param datum
+     */
     public static void addBefund(int patientID, String pfad, LocalDate datum) {
         String query = "INSERT INTO befund (PatientID, Pfad, Datum) VALUES (?, ?, ?)";
 

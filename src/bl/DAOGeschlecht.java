@@ -10,6 +10,10 @@ import java.util.List;
 
 public class DAOGeschlecht {
 
+    /**
+     * Liefert alle Geschlechter zurück.
+     * @return Liefer eine Liste aller Geschlechter zurück.
+     */
     public static List<Geschlecht> getAllGeschlechter() {
         List<Geschlecht> geschlechterListe = new ArrayList<>();
 

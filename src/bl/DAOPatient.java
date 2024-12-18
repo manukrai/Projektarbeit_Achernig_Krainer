@@ -12,6 +12,10 @@ import java.util.List;
 public class DAOPatient {
 
 
+    /**
+     * Liefert alle Patienten zurück
+     * @return Liste aller Patienten.
+     */
     public static List<Patient> getAllPatients() {
         List<Patient> patients = new LinkedList<>();
         String query = """
@@ -62,6 +66,11 @@ public class DAOPatient {
         return patients;
     }
 
+    /**
+     * Fügt einem Patienten hinzu.
+     * @param patient
+     * @return Ob es funktioniert hat.
+     */
     public static boolean addPatient(Patient patient) {
         String query = """
         INSERT INTO patient (
@@ -104,6 +113,11 @@ public class DAOPatient {
         }
     }
 
+    /**
+     * Löscht einen Patienten aus der Datenbank.
+     * @param patientId
+     * @return Ob es funktioniert hat.
+     */
     public static boolean deletePatient(int patientId) {
         String sql = "DELETE FROM patient WHERE PatientID = ?";
         String sql_befund = "DELETE FROM befund WHERE PatientID = ?";
@@ -133,6 +147,22 @@ public class DAOPatient {
         }
     }
 
+    /**
+     * Updated die Daten im Patienten.
+     * @param patientID
+     * @param vorname
+     * @param nachname
+     * @param anrede
+     * @param geburtsdatum
+     * @param strasse
+     * @param plz
+     * @param ort
+     * @param bundesland
+     * @param telefon
+     * @param geschlechtID
+     * @param krankenkasse
+     * @param sonstiges
+     */
     public static void updatePatient(int patientID, String vorname, String nachname, String anrede, String geburtsdatum,
                               String strasse, String plz, String ort, int bundesland, String telefon, int geschlechtID,
                               int krankenkasse, String sonstiges) {
