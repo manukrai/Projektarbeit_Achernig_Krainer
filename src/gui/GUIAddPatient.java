@@ -1,8 +1,10 @@
 package gui;
 
+import beans.Bundesland;
 import beans.Geschlecht;
 import beans.Krankenkasse;
 import beans.Patient;
+import bl.DAOBundesland;
 import bl.DAOGeschlecht;
 import bl.DAOKrankenkasse;
 import bl.DAOPatient;
@@ -46,7 +48,6 @@ public class GUIAddPatient {
                 newPatient.setStrasse(tfStrasse.getText());
                 newPatient.setPlz(tfPlz.getText());
                 newPatient.setOrt(tfOrt.getText());
-                newPatient.setBundeslandID(2);
                 newPatient.setTelefon(tfTelefonnummer.getText());
                 newPatient.setKrankenkasseID(2);
                 newPatient.setSonstiges(tfAnmerkung.getText());
@@ -77,6 +78,30 @@ public class GUIAddPatient {
                         newPatient.setKrankenkasseID(krankenkasse.getKrankenkasseID());
                     }
                 }
+
+                int bundeslandID = -1;
+
+                for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
+                {
+                    if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
+                    {
+                       bundeslandID = bundesland.getBundeslandID();
+                    }
+                }
+
+                if(bundeslandID == -1)
+                {
+                    DAOBundesland.addBundesland(tfBundesland.getText());
+                    for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
+                    {
+                        if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
+                        {
+                            bundeslandID = bundesland.getBundeslandID();
+                        }
+                    }
+                }
+
+                newPatient.setBundeslandID(bundeslandID);
 
                 DAOPatient.addPatient(newPatient);
 

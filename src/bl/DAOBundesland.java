@@ -24,7 +24,6 @@ public class DAOBundesland {
                 liste.add(new Bundesland(id, bezeichnung));
             }
         } catch (SQLException e) {
-            System.err.println("Fehler beim Abrufen der Bundesländer: " + e.getMessage());
         }
 
         return liste;
@@ -33,15 +32,12 @@ public class DAOBundesland {
     public static void addBundesland(String bezeichnung) {
         String query = "INSERT INTO bundesland (Bezeichnung) VALUES (?)";
 
-        try (
-             PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
+        try (PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
 
             statement.setString(1, bezeichnung);
             statement.executeUpdate();
-            System.out.println("Bundesland erfolgreich hinzugefügt: " + bezeichnung);
 
         } catch (SQLException e) {
-            System.err.println("Fehler beim Hinzufügen des Bundeslandes: " + e.getMessage());
         }
     }
 }

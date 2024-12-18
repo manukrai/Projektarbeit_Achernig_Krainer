@@ -24,7 +24,6 @@ public class DAOKrankenkasse {
                 liste.add(new Krankenkasse(id, bezeichnung));
             }
         } catch (SQLException e) {
-            System.err.println("Fehler beim Abrufen der Krankenkassen: " + e.getMessage());
         }
 
         return liste;
@@ -39,10 +38,8 @@ public class DAOKrankenkasse {
 
             statement.setString(1, bezeichnung);
             statement.executeUpdate();
-            System.out.println("Krankenkasse erfolgreich hinzugefügt: " + bezeichnung);
 
         } catch (SQLException e) {
-            System.err.println("Fehler beim Hinzufügen der Krankenkasse: " + e.getMessage());
         }
     }
 

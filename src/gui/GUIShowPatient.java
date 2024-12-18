@@ -2,10 +2,7 @@ package gui;
 
 import beans.Bundesland;
 import beans.Patient;
-import bl.DAOBundesland;
-import bl.DAOGeschlecht;
-import bl.DAOKrankenkasse;
-import bl.DAOPatient;
+import bl.*;
 import beans.Geschlecht;
 import beans.Krankenkasse;
 
@@ -55,7 +52,6 @@ public class GUIShowPatient {
                     gui.getAllPatientsFromDatabase();
                     gui.setTableModel();
                     frame.dispose();
-                } else {
                 }
 
 
@@ -66,6 +62,60 @@ public class GUIShowPatient {
             public void actionPerformed(ActionEvent e) {
                 GUIBefunde showBefunde = new GUIBefunde();
                 showBefunde.showBefunde(patient);
+            }
+        });
+        btSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int bundeslandId = -1;
+                int geschlechtId = -1;
+                int krankenkasseId = -1;
+
+                for(Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter())
+                {
+                    if(geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString()))
+                    {
+                        geschlechtId = geschlecht.getGeschlechtID();
+                    }
+                }
+
+                for(Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen())
+                {
+                    if(krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString()))
+                    {
+                        krankenkasseId = krankenkasse.getKrankenkasseID();
+                    }
+                }
+
+                int bundeslandID = -1;
+
+                for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
+                {
+                    if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
+                    {
+                        bundeslandID = bundesland.getBundeslandID();
+                    }
+                }
+
+                if(bundeslandID == -1)
+                {
+                    DAOBundesland.addBundesland(tfBundesland.getText());
+                    for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
+                    {
+                        if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
+                        {
+                            bundeslandID = bundesland.getBundeslandID();
+                        }
+                    }
+                }
+
+                DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),tfGeburtsdatum.getText(),tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+
+                gui.getAllPatientsFromDatabase();
+                gui.setTableModel();
+                frame.dispose();
+
             }
         });
     }

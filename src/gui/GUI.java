@@ -101,7 +101,6 @@ public class GUI extends JFrame
     {
         setPlaceholder(tfSearch,"Suche");
 
-
         DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","Anrede","Vorname","Nachname"}){
 
             @Override

@@ -132,4 +132,38 @@ public class DAOPatient {
             return false; // Fehler beim Löschen
         }
     }
+
+    public static void updatePatient(int patientID, String vorname, String nachname, String anrede, String geburtsdatum,
+                              String strasse, String plz, String ort, int bundesland, String telefon, int geschlechtID,
+                              int krankenkasse, String sonstiges) {
+
+            String updateSQL = "UPDATE patient SET Vorname = ?, Nachname = ?, Anrede = ?, Geburtsdatum = ?, Strasse = ?, " +
+                    "PLZ = ?, Ort = ?, Bundesland = ?, Telefon = ?, GeschlechtID = ?, Krankenkasse = ?, Sonstiges = ? " +
+                    "WHERE PatientID = ?";
+
+
+
+        try (PreparedStatement stmt = DBAccess.connection.prepareStatement(updateSQL);) {
+            // PreparedStatement für das Update vorbereiten
+
+            stmt.setString(1, vorname);
+            stmt.setString(2, nachname);
+            stmt.setString(3, anrede);
+            stmt.setDate(4, Date.valueOf(geburtsdatum));
+            stmt.setString(5, strasse);
+            stmt.setString(6, plz);
+            stmt.setString(7, ort);
+            stmt.setInt(8, bundesland);
+            stmt.setString(9, telefon);
+            stmt.setInt(10, geschlechtID);
+            stmt.setInt(11, krankenkasse);
+            stmt.setString(12, sonstiges);
+            stmt.setInt(13, patientID);
+
+            // SQL Update ausführen
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

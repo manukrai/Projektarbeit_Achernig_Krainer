@@ -45,7 +45,6 @@ public class DBAccess {
                 try {
                     if (connection != null && !connection.isClosed()) {
                         connection.close();
-                        System.out.println("Verbindung durch Shutdown-Hook geschlossen.");
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();

@@ -32,7 +32,6 @@ public class DAOBefund {
             }
 
         } catch (SQLException e) {
-            System.err.println("Fehler beim Abrufen der Befunde für PatientID " + patientID + ": " + e.getMessage());
         }
 
         return liste;
@@ -49,10 +48,8 @@ public class DAOBefund {
             statement.setDate(3, Date.valueOf(datum));
 
             statement.executeUpdate();
-            System.out.println("Befund erfolgreich hinzugefügt: PatientID " + patientID + ", Pfad: " + pfad);
-
-        } catch (SQLException e) {
-            System.err.println("Fehler beim Hinzufügen des Befunds: " + e.getMessage());
+        }
+        catch (SQLException e) {
         }
     }
 
