@@ -10,6 +10,10 @@ import java.util.List;
 
 public class DAOBundesland {
 
+    /**
+     * Liefer alle Bundeslaender zurück.
+     * @return Liste aller Bundeslaender.
+     */
     public static List<Bundesland> getAllBundeslaender() {
         List<Bundesland> liste = new ArrayList<>();
         String query = "SELECT BundeslandID, Bezeichnung FROM bundesland";
@@ -29,6 +33,10 @@ public class DAOBundesland {
         return liste;
     }
 
+    /**
+     * Fügt ein neues Bundesland hinzu.
+     * @param bezeichnung
+     */
     public static void addBundesland(String bezeichnung) {
         String query = "INSERT INTO bundesland (Bezeichnung) VALUES (?)";
 

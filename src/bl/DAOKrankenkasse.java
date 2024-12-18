@@ -10,6 +10,10 @@ import java.util.List;
 
 public class DAOKrankenkasse {
 
+    /**
+     * Liefer alle Krankhäuser zurück.
+     * @return Liste aller Krankenhäuser.
+     */
     public static List<Krankenkasse> getAllKrankenkassen() {
         List<Krankenkasse> liste = new ArrayList<>();
         String query = "SELECT KrankenkasseID, Bezeichnung FROM krankenkasse";
@@ -27,20 +31,6 @@ public class DAOKrankenkasse {
         }
 
         return liste;
-    }
-
-    // Methode: Krankenkasse hinzufügen
-    public static void addKrankenkasse(String bezeichnung) {
-        String query = "INSERT INTO krankenkasse (Bezeichnung) VALUES (?)";
-
-        try (
-             PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
-
-            statement.setString(1, bezeichnung);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-        }
     }
 
 }
