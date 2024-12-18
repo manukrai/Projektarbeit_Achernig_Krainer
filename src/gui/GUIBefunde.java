@@ -106,19 +106,16 @@ public class GUIBefunde {
      * @param placeholder Der Placeholder-Text
      */
     public static void setPlaceholder(JTextField textField, String placeholder) {
-        // Placeholder-Farbe
         Color placeholderColor = Color.GRAY;
         Color textColor = Color.BLACK;
 
-        // Standardtext und Farbe setzen
         textField.setText(placeholder);
         textField.setForeground(placeholderColor);
 
-        // FocusListener hinzufügen
+
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                // Wenn der aktuelle Text der Placeholder ist -> löschen
                 if (textField.getText().equals(placeholder)) {
                     textField.setText("");
                     textField.setForeground(textColor);
@@ -127,7 +124,6 @@ public class GUIBefunde {
 
             @Override
             public void focusLost(FocusEvent e) {
-                // Wenn das Textfeld leer ist -> Placeholder anzeigen
                 if (textField.getText().isEmpty()) {
                     textField.setText(placeholder);
                     textField.setForeground(placeholderColor);

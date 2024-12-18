@@ -23,7 +23,6 @@ public class GUI extends JFrame
     private JTable patientTable;
     private JTextField tfSearch;
     private JPanel panelHeader;
-    private JPanel panelTable;
     private JButton btAddPatient;
     private List<Patient>  patients;
     TableRowSorter<TableModel> sorter;
@@ -119,7 +118,7 @@ public class GUI extends JFrame
     }
 
     /**
-     * Setzt das Tabellenmodell für dei Patiententabelle und lädt die Patientendaten in die Tabelle
+     * Setzt das Tabellenmodell für die Patiententabelle und lädt die Patientendaten in die Tabelle
      */
     public void setTableModel()
     {
@@ -175,19 +174,15 @@ public class GUI extends JFrame
      * @param placeholder Der anzuzeigende Platzhalter-Text
      */
     public static void setPlaceholder(JTextField textField, String placeholder) {
-        // Placeholder-Farbe
         Color placeholderColor = Color.GRAY;
         Color textColor = Color.BLACK;
 
-        // Standardtext und Farbe setzen
         textField.setText(placeholder);
         textField.setForeground(placeholderColor);
 
-        // FocusListener hinzufügen
         textField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                // Wenn der aktuelle Text der Placeholder ist -> löschen
                 if (textField.getText().equals(placeholder)) {
                     textField.setText("");
                     textField.setForeground(textColor);
@@ -196,7 +191,6 @@ public class GUI extends JFrame
 
             @Override
             public void focusLost(FocusEvent e) {
-                // Wenn das Textfeld leer ist -> Placeholder anzeigen
                 if (textField.getText().isEmpty()) {
                     textField.setText(placeholder);
                     textField.setForeground(placeholderColor);

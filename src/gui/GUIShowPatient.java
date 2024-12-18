@@ -22,7 +22,6 @@ public class GUIShowPatient {
      * Hauptfenster der GUI
      */
     private static JFrame frame;
-    private JLabel Geschlecht;
     private JComboBox cbAnrede;
     private JTextField tfVorname;
     private JTextField tfNachname;
@@ -53,13 +52,12 @@ public class GUIShowPatient {
 
                 int result = JOptionPane.showConfirmDialog(
                         frame,
-                        "Bist du sicher, dass du löschen möchtest?", // Nachricht
-                        "Bestätigung", // Titel
-                        JOptionPane.YES_NO_OPTION, // Optionen (Ja/Nein)
-                        JOptionPane.WARNING_MESSAGE // Symbol (Warnung)
+                        "Bist du sicher, dass du löschen möchtest?",
+                        "Bestätigung",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
                 );
 
-                // Reaktion auf die Auswahl
                 if (result == JOptionPane.YES_OPTION) {
                     DAOPatient.deletePatient(patient.getPatientID());
                     gui.getAllPatientsFromDatabase();

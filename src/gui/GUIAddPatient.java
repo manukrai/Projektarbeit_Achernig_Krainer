@@ -30,7 +30,6 @@ public class GUIAddPatient {
     private JTextField tfAnmerkung;
     private JButton btAdd;
     private JComboBox cbAnrede;
-    private JButton btCancel;
     private JPanel addPanel;
     private JTextField tfOrt;
     private JComboBox cbGeschlecht;
