@@ -23,6 +23,7 @@ public class GUI extends JFrame
     private JTable patientTable;
     private JTextField tfSearch;
     private JPanel panelHeader;
+    private JPanel panelTable;
     private JButton btAddPatient;
     private List<Patient>  patients;
     TableRowSorter<TableModel> sorter;
