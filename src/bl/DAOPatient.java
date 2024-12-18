@@ -149,7 +149,14 @@ public class DAOPatient {
             stmt.setString(1, vorname);
             stmt.setString(2, nachname);
             stmt.setString(3, anrede);
-            stmt.setDate(4, Date.valueOf(geburtsdatum));
+            if(geburtsdatum!=null)
+            {
+                stmt.setDate(4, Date.valueOf(geburtsdatum));
+            }
+            else
+            {
+                stmt.setNull(4, java.sql.Types.DATE);
+            }
             stmt.setString(5, strasse);
             stmt.setString(6, plz);
             stmt.setString(7, ort);

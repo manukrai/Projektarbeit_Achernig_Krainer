@@ -9,6 +9,9 @@ import beans.Krankenkasse;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class GUIShowPatient {
     private static JFrame frame;
@@ -110,7 +113,19 @@ public class GUIShowPatient {
                     }
                 }
 
-                DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),tfGeburtsdatum.getText(),tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+                try
+                {
+                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),tfGeburtsdatum.getText(),tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+
+                }
+                catch (Exception ex)
+                {
+                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),null,tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+                }
+
 
                 gui.getAllPatientsFromDatabase();
                 gui.setTableModel();
