@@ -85,7 +85,6 @@ public class DAOPatient {
             stmt.setString(1, patient.getVorname());
             stmt.setString(2, patient.getNachname());
             stmt.setString(3, patient.getAnrede());
-            System.out.println(patient.getGeburtsdatum());
             if(patient.getGeburtsdatum()!=null)
             {
                 stmt.setDate(4, Date.valueOf(patient.getGeburtsdatum()));
