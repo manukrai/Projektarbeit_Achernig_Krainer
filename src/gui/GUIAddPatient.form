@@ -145,8 +145,8 @@
         </constraints>
         <properties>
           <model>
-            <item value="Frau"/>
             <item value="Herr"/>
+            <item value="Frau"/>
           </model>
         </properties>
       </component>

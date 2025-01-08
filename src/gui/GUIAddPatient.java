@@ -10,8 +10,11 @@ import bl.DAOKrankenkasse;
 import bl.DAOPatient;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
@@ -142,5 +145,40 @@ public class GUIAddPatient {
         {
             cbKrankenkasse.addItem(krankenkasse.getBezeichnung());
         }
+
+        setPlaceholder(tfGeburtsdatum,"yyyy-mm-dd");
+    }
+
+    /**
+     * Setzt einen Placeholder-Text in ein JTextField
+     * Placeholder-Text wird angezeigt, solange das Textfeld leer ist
+     * @param textField Das JText-Field, in dem der Placeholder angezeigt werden soll
+     * @param placeholder Der Placeholder-Text
+     */
+    public static void setPlaceholder(JTextField textField, String placeholder) {
+        Color placeholderColor = Color.GRAY;
+        Color textColor = Color.BLACK;
+
+        textField.setText(placeholder);
+        textField.setForeground(placeholderColor);
+
+
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(textColor);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(placeholderColor);
+                }
+            }
+        });
     }
 }
