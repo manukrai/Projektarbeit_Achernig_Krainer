@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 public class DAOBundesland {
 
+    private static final Logger logger = Logger.getLogger(DAOBundesland.class.getName());
+
     /**
      * Liefer alle Bundeslaender zurück.
      * @return Liste aller Bundeslaender.
@@ -20,7 +22,11 @@ public class DAOBundesland {
         List<Bundesland> liste = new ArrayList<>();
         String query = "SELECT BundeslandID, Bezeichnung FROM bundesland";
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return liste;
+        }
         try (
                 PreparedStatement statement = DBAccess.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -31,7 +37,6 @@ public class DAOBundesland {
                 liste.add(new Bundesland(id, bezeichnung));
             }
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }
@@ -46,16 +51,22 @@ public class DAOBundesland {
     public static void addBundesland(String bezeichnung) {
         String query = "INSERT INTO bundesland (Bezeichnung) VALUES (?)";
 
-        if(DBAccess.connection != null)
-        try (PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
-
-            statement.setString(1, bezeichnung);
-            statement.executeUpdate();
-
-        } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-            logger.setLevel(Level.ALL);
-            logger.severe(ex.getMessage());
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
         }
+        else
+        {
+            try (PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
+
+                statement.setString(1, bezeichnung);
+                statement.executeUpdate();
+
+            } catch (SQLException ex) {
+                logger.setLevel(Level.ALL);
+                logger.severe(ex.getMessage());
+            }
+        }
+
     }
 }

@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 public class DAOBefund {
 
+    private static final Logger logger = Logger.getLogger(DAOBefund.class.getName());
+
     /**
      * Hier bekommt man die Befunde welche zu einem Patienten gehören.
      * @param patientID
@@ -23,7 +25,11 @@ public class DAOBefund {
         List<Befund> liste = new ArrayList<>();
         String query = "SELECT BefundID, PatientID, Pfad, Datum FROM befund WHERE PatientID = ?";
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return liste;
+        }
         try (
              PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
 
@@ -40,7 +46,6 @@ public class DAOBefund {
             }
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }
@@ -57,21 +62,27 @@ public class DAOBefund {
     public static void addBefund(int patientID, String pfad, LocalDate datum) {
         String query = "INSERT INTO befund (PatientID, Pfad, Datum) VALUES (?, ?, ?)";
 
-        if(DBAccess.connection != null)
-        try (
-             PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
-
-            statement.setInt(1, patientID);
-            statement.setString(2, pfad);
-            statement.setDate(3, Date.valueOf(datum));
-
-            statement.executeUpdate();
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
         }
-        catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-            logger.setLevel(Level.ALL);
-            logger.severe(ex.getMessage());
+        else
+        {
+            try (
+                PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
+
+                statement.setInt(1, patientID);
+                statement.setString(2, pfad);
+                statement.setDate(3, Date.valueOf(datum));
+
+                statement.executeUpdate();
+            }
+            catch (SQLException ex) {
+                logger.setLevel(Level.ALL);
+                logger.severe(ex.getMessage());
+            }
         }
+
     }
 
 

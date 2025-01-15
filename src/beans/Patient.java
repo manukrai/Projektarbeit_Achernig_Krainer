@@ -1,11 +1,8 @@
 package beans;
 
-import java.io.Serializable;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 
 public class Patient implements Comparable<Patient>
 {

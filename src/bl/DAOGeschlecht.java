@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 public class DAOGeschlecht {
 
+    private static final Logger logger = Logger.getLogger(DAOGeschlecht.class.getName());
+
     /**
      * Liefert alle Geschlechter zurück.
      * @return Liefer eine Liste aller Geschlechter zurück.
@@ -21,7 +23,11 @@ public class DAOGeschlecht {
 
         String query = "SELECT GeschlechtID, Bezeichnung FROM geschlecht";
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return geschlechterListe;
+        }
         try (
                 PreparedStatement statement = DBAccess.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -34,7 +40,6 @@ public class DAOGeschlecht {
             }
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }

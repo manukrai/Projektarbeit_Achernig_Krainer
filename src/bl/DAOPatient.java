@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 public class DAOPatient {
 
+    private static final Logger logger = Logger.getLogger(DAOPatient.class.getName());
 
     /**
      * Liefert alle Patienten zurück
@@ -35,7 +36,11 @@ public class DAOPatient {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return patients;
+        }
         try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -63,7 +68,6 @@ public class DAOPatient {
             }
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }
@@ -84,7 +88,11 @@ public class DAOPatient {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     """;
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return false;
+        }
         try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query)) {
 
             // Setze die Parameter für das PreparedStatement
@@ -118,7 +126,6 @@ public class DAOPatient {
             logger.severe(ex.getMessage());
             return false;
         }
-        return false;
     }
 
     /**
@@ -136,13 +143,16 @@ public class DAOPatient {
             int rowsAffected = statement.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
             return false;
         }
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return false;
+        }
         try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql)) {
             // Setze die PatientID als Parameter für die SQL-Abfrage
             statement.setInt(1, patientId);
@@ -154,12 +164,10 @@ public class DAOPatient {
             return rowsAffected > 0;
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
             return false; // Fehler beim Löschen
         }
-        return false;
     }
 
     /**
@@ -187,37 +195,43 @@ public class DAOPatient {
                     "WHERE PatientID = ?";
 
 
-        if(DBAccess.connection != null)
-        try (PreparedStatement stmt = DBAccess.connection.prepareStatement(updateSQL);) {
-            // PreparedStatement für das Update vorbereiten
-
-            stmt.setString(1, vorname);
-            stmt.setString(2, nachname);
-            stmt.setString(3, anrede);
-            if(geburtsdatum!=null)
-            {
-                stmt.setDate(4, Date.valueOf(geburtsdatum));
-            }
-            else
-            {
-                stmt.setNull(4, java.sql.Types.DATE);
-            }
-            stmt.setString(5, strasse);
-            stmt.setString(6, plz);
-            stmt.setString(7, ort);
-            stmt.setInt(8, bundesland);
-            stmt.setString(9, telefon);
-            stmt.setInt(10, geschlechtID);
-            stmt.setInt(11, krankenkasse);
-            stmt.setString(12, sonstiges);
-            stmt.setInt(13, patientID);
-
-            // SQL Update ausführen
-            stmt.executeUpdate();
-        } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-            logger.setLevel(Level.ALL);
-            logger.severe(ex.getMessage());
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
         }
+        else
+        {
+            try (PreparedStatement stmt = DBAccess.connection.prepareStatement(updateSQL);) {
+                // PreparedStatement für das Update vorbereiten
+
+                stmt.setString(1, vorname);
+                stmt.setString(2, nachname);
+                stmt.setString(3, anrede);
+                if(geburtsdatum!=null)
+                {
+                    stmt.setDate(4, Date.valueOf(geburtsdatum));
+                }
+                else
+                {
+                    stmt.setNull(4, java.sql.Types.DATE);
+                }
+                stmt.setString(5, strasse);
+                stmt.setString(6, plz);
+                stmt.setString(7, ort);
+                stmt.setInt(8, bundesland);
+                stmt.setString(9, telefon);
+                stmt.setInt(10, geschlechtID);
+                stmt.setInt(11, krankenkasse);
+                stmt.setString(12, sonstiges);
+                stmt.setInt(13, patientID);
+
+                // SQL Update ausführen
+                stmt.executeUpdate();
+            } catch (SQLException ex) {
+                logger.setLevel(Level.ALL);
+                logger.severe(ex.getMessage());
+            }
+        }
+
     }
 }

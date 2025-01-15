@@ -5,8 +5,6 @@ import accountManagment.AccountManager;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Klasse implementiert die grafische Benutzeroberfläche für Login eines Patient Management Systems

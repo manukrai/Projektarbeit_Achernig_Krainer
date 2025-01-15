@@ -18,6 +18,7 @@ public class DBAccess {
     private static String user = "postgres";
     private static String password = "root";
     public static Connection connection = null;
+    private static final Logger logger = Logger.getLogger(DBAccess.class.getName());
 
     private DBAccess() {}
 
@@ -54,7 +55,6 @@ public class DBAccess {
             password = properties.getProperty("password");
 
         } catch (IOException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }
@@ -62,7 +62,6 @@ public class DBAccess {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }
@@ -76,14 +75,12 @@ public class DBAccess {
                         connection.close();
                     }
                 } catch (SQLException ex) {
-                    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
                     logger.setLevel(Level.ALL);
                     logger.severe(ex.getMessage());
                 }
             }));
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }

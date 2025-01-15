@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 
 public class DAOKrankenkasse {
 
+    private static final Logger logger = Logger.getLogger(DAOKrankenkasse.class.getName());
+
     /**
      * Liefer alle Krankhäuser zurück.
      * @return Liste aller Krankenhäuser.
@@ -20,7 +22,11 @@ public class DAOKrankenkasse {
         List<Krankenkasse> liste = new ArrayList<>();
         String query = "SELECT KrankenkasseID, Bezeichnung FROM krankenkasse";
 
-        if(DBAccess.connection != null)
+        if(DBAccess.connection == null)
+        {
+            logger.severe("Keine Verbindung zur Datenbank verfügbar.");
+            return liste;
+        }
         try (
                 PreparedStatement statement = DBAccess.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -31,7 +37,6 @@ public class DAOKrankenkasse {
                 liste.add(new Krankenkasse(id, bezeichnung));
             }
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
         }
