@@ -60,7 +60,7 @@ public class GUIShowPatient {
                 );
 
                 if (result == JOptionPane.YES_OPTION) {
-                    DAOPatient.deletePatientAsync(patient.getPatientID());
+                    DAOPatient.deletePatientAsync(patient.getPatientID()).join();
                     try {
                         gui.getAllPatientsFromDatabase();
                     } catch (ExecutionException ex) {

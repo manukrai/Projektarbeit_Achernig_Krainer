@@ -135,7 +135,7 @@ public class GUIAddPatient {
 
                 newPatient.setBundeslandID(bundeslandID);
 
-                DAOPatient.addPatientAsync(newPatient);
+                DAOPatient.addPatientAsync(newPatient).join();
 
                 try {
                     gui.getAllPatientsFromDatabase();
