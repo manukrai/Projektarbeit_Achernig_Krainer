@@ -1,24 +1,26 @@
 package gui;
 
 import accountManagment.AccountManager;
-import bl.DBAccess;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Klasse implementiert die grafische Benutzeroberfläche für Login eines Patient Management Systems
  * Benutzer können ihre Anmeldedaten eingeben um Zugriff auf die Hauptanwendung zu erhalten
  * Bei flaschen Eingaben wird Fehlermeldung angezeigt
  */
-public class guiLogin extends JFrame
+public class GUILogin extends JFrame
 {
     private static JFrame frame;
     private JButton btConnect;
     private JPanel loginPanel;
     private JTextField textUsername;
     private JPasswordField textPasswort;
+
 
     /**
      * Einstiegspunkt für die Anwendung
@@ -27,17 +29,19 @@ public class guiLogin extends JFrame
      */
     public static void main(String[] args) {
         frame = new JFrame("Patient Managment System");
-        frame.setContentPane(new guiLogin().loginPanel);
+        frame.setContentPane(new GUILogin().loginPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+
     }
 
     /**
      * Konstruktor für Klasse guiLogin
      * Initialisiert GUI-Komponenten, setzt Bild im Fenster und fügt Login:Logik hinzu
      */
-    public guiLogin() {
+    public GUILogin() {
 
         btConnect.addActionListener(new ActionListener() {
             @Override

@@ -19,6 +19,8 @@ import java.awt.event.FocusListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GUIShowPatient {
     /**
@@ -135,6 +137,9 @@ public class GUIShowPatient {
                 catch (Exception ex)
                 {
                     DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),null,tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+                    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+                    logger.setLevel(Level.ALL);
+                    logger.warning("Geburtsdatum ist leer");
                 }
 
 

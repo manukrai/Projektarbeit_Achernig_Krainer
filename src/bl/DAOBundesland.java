@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DAOBundesland {
 
@@ -18,6 +20,7 @@ public class DAOBundesland {
         List<Bundesland> liste = new ArrayList<>();
         String query = "SELECT BundeslandID, Bezeichnung FROM bundesland";
 
+        if(DBAccess.connection != null)
         try (
                 PreparedStatement statement = DBAccess.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -27,7 +30,10 @@ public class DAOBundesland {
                 String bezeichnung = resultSet.getString("Bezeichnung");
                 liste.add(new Bundesland(id, bezeichnung));
             }
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         return liste;
@@ -40,12 +46,16 @@ public class DAOBundesland {
     public static void addBundesland(String bezeichnung) {
         String query = "INSERT INTO bundesland (Bezeichnung) VALUES (?)";
 
+        if(DBAccess.connection != null)
         try (PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
 
             statement.setString(1, bezeichnung);
             statement.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
     }
 }

@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DAOGeschlecht {
 
@@ -19,7 +21,7 @@ public class DAOGeschlecht {
 
         String query = "SELECT GeschlechtID, Bezeichnung FROM geschlecht";
 
-        // Verbindung zur Datenbank herstellen
+        if(DBAccess.connection != null)
         try (
                 PreparedStatement statement = DBAccess.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -28,12 +30,13 @@ public class DAOGeschlecht {
                 int id = resultSet.getInt("GeschlechtID");
                 String bezeichnung = resultSet.getString("Bezeichnung");
 
-                // Geschlecht-Objekt erstellen und zur Liste hinzufügen
                 geschlechterListe.add(new Geschlecht(id, bezeichnung));
             }
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         return geschlechterListe;

@@ -8,6 +8,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DAOPatient {
 
@@ -33,6 +35,7 @@ public class DAOPatient {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        if(DBAccess.connection != null)
         try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
@@ -59,8 +62,10 @@ public class DAOPatient {
                 patients.add(patient);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         return patients;
@@ -79,6 +84,7 @@ public class DAOPatient {
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     """;
 
+        if(DBAccess.connection != null)
         try (PreparedStatement stmt = DBAccess.connection.prepareStatement(query)) {
 
             // Setze die Parameter für das PreparedStatement
@@ -106,10 +112,13 @@ public class DAOPatient {
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
             return false;
         }
+        return false;
     }
 
     /**
@@ -121,15 +130,19 @@ public class DAOPatient {
         String sql = "DELETE FROM patient WHERE PatientID = ?";
         String sql_befund = "DELETE FROM befund WHERE PatientID = ?";
 
+        if(DBAccess.connection != null)
         try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql_befund)) {
             statement.setInt(1, patientId);
             int rowsAffected = statement.executeUpdate();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
             return false;
         }
 
+        if(DBAccess.connection != null)
         try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql)) {
             // Setze die PatientID als Parameter für die SQL-Abfrage
             statement.setInt(1, patientId);
@@ -140,10 +153,13 @@ public class DAOPatient {
             // Wenn mindestens eine Zeile betroffen ist, war das Löschen erfolgreich
             return rowsAffected > 0;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
             return false; // Fehler beim Löschen
         }
+        return false;
     }
 
     /**
@@ -171,7 +187,7 @@ public class DAOPatient {
                     "WHERE PatientID = ?";
 
 
-
+        if(DBAccess.connection != null)
         try (PreparedStatement stmt = DBAccess.connection.prepareStatement(updateSQL);) {
             // PreparedStatement für das Update vorbereiten
 
@@ -198,8 +214,10 @@ public class DAOPatient {
 
             // SQL Update ausführen
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
     }
 }

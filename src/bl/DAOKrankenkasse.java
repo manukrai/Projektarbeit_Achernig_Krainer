@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DAOKrankenkasse {
 
@@ -18,6 +20,7 @@ public class DAOKrankenkasse {
         List<Krankenkasse> liste = new ArrayList<>();
         String query = "SELECT KrankenkasseID, Bezeichnung FROM krankenkasse";
 
+        if(DBAccess.connection != null)
         try (
                 PreparedStatement statement = DBAccess.connection.prepareStatement(query);
                 ResultSet resultSet = statement.executeQuery()) {
@@ -27,7 +30,10 @@ public class DAOKrankenkasse {
                 String bezeichnung = resultSet.getString("Bezeichnung");
                 liste.add(new Krankenkasse(id, bezeichnung));
             }
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         return liste;

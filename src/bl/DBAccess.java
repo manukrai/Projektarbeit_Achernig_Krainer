@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class DBAccess {
@@ -51,18 +53,18 @@ public class DBAccess {
             user = properties.getProperty("username");
             password = properties.getProperty("password");
 
-            System.out.println("URL: " + url);
-            System.out.println("Username: " + user);
-            System.out.println("Password: " + password);
-
-        } catch (IOException e) {
-            System.err.println("Fehler beim Lesen der Datei: " + e.getMessage());
+        } catch (IOException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException ex) {
-            System.out.println(ex);
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         try {
@@ -73,13 +75,17 @@ public class DBAccess {
                     if (connection != null && !connection.isClosed()) {
                         connection.close();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                } catch (SQLException ex) {
+                    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+                    logger.setLevel(Level.ALL);
+                    logger.severe(ex.getMessage());
                 }
             }));
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
     }
 

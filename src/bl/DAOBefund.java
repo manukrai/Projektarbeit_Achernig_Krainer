@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DAOBefund {
 
@@ -21,6 +23,7 @@ public class DAOBefund {
         List<Befund> liste = new ArrayList<>();
         String query = "SELECT BefundID, PatientID, Pfad, Datum FROM befund WHERE PatientID = ?";
 
+        if(DBAccess.connection != null)
         try (
              PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
 
@@ -36,7 +39,10 @@ public class DAOBefund {
                 }
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
 
         return liste;
@@ -51,6 +57,7 @@ public class DAOBefund {
     public static void addBefund(int patientID, String pfad, LocalDate datum) {
         String query = "INSERT INTO befund (PatientID, Pfad, Datum) VALUES (?, ?, ?)";
 
+        if(DBAccess.connection != null)
         try (
              PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
 
@@ -60,7 +67,10 @@ public class DAOBefund {
 
             statement.executeUpdate();
         }
-        catch (SQLException e) {
+        catch (SQLException ex) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.setLevel(Level.ALL);
+            logger.severe(ex.getMessage());
         }
     }
 

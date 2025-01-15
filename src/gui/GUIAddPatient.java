@@ -17,6 +17,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Klasse implementiert GUI fpr das Hinzufügen eines neuen Patienten
@@ -67,6 +69,9 @@ public class GUIAddPatient {
                 catch(DateTimeParseException ex)
                 {
                     JOptionPane.showMessageDialog(frame, "Datums Format nicht passend!");
+                    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+                    logger.setLevel(Level.ALL);
+                    logger.warning("Falsches Datums Format!");
                 }
 
                 List<Geschlecht> geschlechtList = DAOGeschlecht.getAllGeschlechter();
