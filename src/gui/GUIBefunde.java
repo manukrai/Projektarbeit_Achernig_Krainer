@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.LocalDate;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Klasse implementiert die GUI für die Anzeige und das Hinzufügen von Befunden zu einem Patienten
@@ -37,8 +38,14 @@ public class GUIBefunde {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!tfUrl.getText().isEmpty() && !tfName.getText().equals("URL eingeben")) {
-                    DAOBefund.addBefund(patient.getPatientID(), tfUrl.getText(), LocalDate.now());
-                    updateTable();
+                    DAOBefund.addBefundAsync(patient.getPatientID(), tfUrl.getText(), LocalDate.now());
+                    try {
+                        updateTable();
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
 
             }
@@ -49,7 +56,7 @@ public class GUIBefunde {
      * Aktualisiert die Tabelle mit den Befunden des Patienten
      * Holt die Befunddaten aus der Datenbank und zeigt sie in der JTable an
      */
-    public void updateTable() {
+    public void updateTable() throws ExecutionException, InterruptedException {
         DefaultTableModel model = new DefaultTableModel(null, new String[]{"ID", "URL", "Datum"}) {
 
             @Override
@@ -68,7 +75,7 @@ public class GUIBefunde {
         lbHeader.add(header);
         tbBefund.getTableHeader().setReorderingAllowed(false);
 
-        for (Befund befund : DAOBefund.getBefundeByPatientID(patient.getPatientID())) {
+        for (Befund befund : DAOBefund.getBefundeByPatientIDAsync(patient.getPatientID()).get()) {
             model.addRow(new Object[]{befund.getBefundID(), befund.getPfad(), befund.getDatum().toString()});
         }
     }
@@ -78,7 +85,7 @@ public class GUIBefunde {
      *
      * @param p Das Patientenobjekt dessen Befund angezeigt werden sollen
      */
-    public void showBefunde(Patient p) {
+    public void showBefunde(Patient p) throws ExecutionException, InterruptedException {
         frame = new JFrame("Befunde");
         frame.setContentPane(panelBefund);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

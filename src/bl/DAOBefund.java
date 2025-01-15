@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -80,6 +81,40 @@ public class DAOBefund {
             }
         }
 
+    }
+
+    /**
+     * Hier bekommt man die Befunde welche zu einem Patienten gehören (asynchron).
+     *
+     * @param patientID
+     * @return Ein CompletableFuture, das eine Liste aller Befunde liefert.
+     */
+    public static CompletableFuture<List<Befund>> getBefundeByPatientIDAsync(int patientID) {
+        return CompletableFuture.supplyAsync(() -> {
+            logger.info("Starte asynchrone Abfrage für Befunde des Patienten: " + patientID);
+            return getBefundeByPatientID(patientID); // Nutzt die synchrone Methode
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());
+            return new ArrayList<>(); // Leere Liste bei Fehler
+        });
+    }
+
+    /**
+     * Fügt einen neuen Befund einem Patienten hinzu (asynchron).
+     *
+     * @param patientID
+     * @param pfad
+     * @param datum
+     * @return Ein CompletableFuture, das den Abschluss der Datenbankoperation signalisiert.
+     */
+    public static CompletableFuture<Void> addBefundAsync(int patientID, String pfad, LocalDate datum) {
+        return CompletableFuture.runAsync(() -> {
+            logger.info("Füge asynchronen Befund für Patient " + patientID + " hinzu.");
+            addBefund(patientID, pfad, datum); // Nutzt die synchrone Methode
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());
+            return null;
+        });
     }
 
 

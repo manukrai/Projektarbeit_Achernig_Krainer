@@ -17,6 +17,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +71,14 @@ public class GUIAddPatient {
                     logger.warning("Falsches Datums Format!");
                 }
 
-                List<Geschlecht> geschlechtList = DAOGeschlecht.getAllGeschlechter();
+                List<Geschlecht> geschlechtList = null;
+                try {
+                    geschlechtList = DAOGeschlecht.getAllGeschlechterAsync().get();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                }
 
                 for (Geschlecht geschlecht : geschlechtList) {
                     if (geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString())) {
@@ -78,34 +86,64 @@ public class GUIAddPatient {
                     }
                 }
 
-                for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
-                    if (krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString())) {
-                        newPatient.setKrankenkasseID(krankenkasse.getKrankenkasseID());
+                try {
+                    for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassenAsync().get()) {
+                        if (krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString())) {
+                            newPatient.setKrankenkasseID(krankenkasse.getKrankenkasseID());
+                        }
                     }
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
                 }
 
                 int bundeslandID = -1;
 
-                for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
-                    if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
-                        bundeslandID = bundesland.getBundeslandID();
-                    }
-                }
-
-                if (bundeslandID == -1) {
-                    DAOBundesland.addBundesland(tfBundesland.getText());
-                    for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+                try {
+                    for (Bundesland bundesland : DAOBundesland.getAllBundeslaenderAsync().get()) {
                         if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
                             bundeslandID = bundesland.getBundeslandID();
                         }
+                    }
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                if (bundeslandID == -1) {
+                    try {
+                        DAOBundesland.addBundeslandAsync(tfBundesland.getText()).get();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        for (Bundesland bundesland : DAOBundesland.getAllBundeslaenderAsync().get()) {
+                            if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
+                                bundeslandID = bundesland.getBundeslandID();
+                            }
+                        }
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
                     }
                 }
 
                 newPatient.setBundeslandID(bundeslandID);
 
-                DAOPatient.addPatient(newPatient);
+                DAOPatient.addPatientAsync(newPatient);
 
-                gui.getAllPatientsFromDatabase();
+                try {
+                    gui.getAllPatientsFromDatabase();
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
                 gui.setTableModel();
                 frame.dispose();
             }
@@ -117,7 +155,7 @@ public class GUIAddPatient {
      *
      * @param gui Referenz zur Haupt-GUI, um die Patiententabelle nach dem Hinzufügen zu aktualisieren.
      */
-    public void showFrame(GUI gui) {
+    public void showFrame(GUI gui) throws ExecutionException, InterruptedException {
         this.gui = gui;
 
         frame = new JFrame("Patient hinzufügen");
@@ -127,11 +165,11 @@ public class GUIAddPatient {
         frame.setVisible(true);
 
 
-        for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter()) {
+        for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechterAsync().get()) {
             cbGeschlecht.addItem(geschlecht.getBezeichnung());
         }
 
-        for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
+        for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassenAsync().get()) {
             cbKrankenkasse.addItem(krankenkasse.getBezeichnung());
         }
 

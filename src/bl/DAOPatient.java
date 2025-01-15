@@ -8,6 +8,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -225,5 +226,82 @@ public class DAOPatient {
             }
         }
 
+    }
+
+    /**
+     * Liefert alle Patienten zurück (asynchron).
+     *
+     * @return Ein CompletableFuture, das eine Liste aller Patienten liefert.
+     */
+    public static CompletableFuture<List<Patient>> getAllPatientsAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            logger.info("Starte asynchrone Abfrage für alle Patienten.");
+            return getAllPatients(); // Nutzt die synchrone Methode
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());
+            return new LinkedList<>(); // Leere Liste bei Fehler
+        });
+    }
+
+    /**
+     * Fügt einem Patienten hinzu (asynchron).
+     *
+     * @param patient
+     * @return Ein CompletableFuture, das angibt, ob das Hinzufügen erfolgreich war.
+     */
+    public static CompletableFuture<Boolean> addPatientAsync(Patient patient) {
+        return CompletableFuture.supplyAsync(() -> {
+            logger.info("Füge asynchron einen Patienten hinzu.");
+            return addPatient(patient); // Nutzt die synchrone Methode
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());
+            return false; // Fehler bei der Operation
+        });
+    }
+
+    /**
+     * Löscht einen Patienten aus der Datenbank (asynchron).
+     *
+     * @param patientId
+     * @return Ein CompletableFuture, das angibt, ob das Löschen erfolgreich war.
+     */
+    public static CompletableFuture<Boolean> deletePatientAsync(int patientId) {
+        return CompletableFuture.supplyAsync(() -> {
+            logger.info("Lösche asynchron einen Patienten mit der ID: " + patientId);
+            return deletePatient(patientId); // Nutzt die synchrone Methode
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());
+            return false; // Fehler bei der Operation
+        });
+    }
+
+    /**
+     * Updated die Daten eines Patienten (asynchron).
+     *
+     * @param patientID
+     * @param vorname
+     * @param nachname
+     * @param anrede
+     * @param geburtsdatum
+     * @param strasse
+     * @param plz
+     * @param ort
+     * @param bundesland
+     * @param telefon
+     * @param geschlechtID
+     * @param krankenkasse
+     * @param sonstiges
+     */
+    public static CompletableFuture<Void> updatePatientAsync(int patientID, String vorname, String nachname, String anrede,
+                                                             String geburtsdatum, String strasse, String plz, String ort,
+                                                             int bundesland, String telefon, int geschlechtID,
+                                                             int krankenkasse, String sonstiges) {
+        return CompletableFuture.runAsync(() -> {
+            logger.info("Aktualisiere asynchron den Patienten mit der ID: " + patientID);
+            updatePatient(patientID, vorname, nachname, anrede, geburtsdatum, strasse, plz, ort, bundesland, telefon, geschlechtID, krankenkasse, sonstiges);
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());
+            return null;
+        });
     }
 }

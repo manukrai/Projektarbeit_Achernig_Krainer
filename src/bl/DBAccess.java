@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 
 public class DBAccess {
 
-    private static DBAccess instance;
     private static String url = "jdbc:postgresql://localhost:5432/Patient";
     private static String user = "postgres";
     private static String password = "root";
@@ -23,25 +22,6 @@ public class DBAccess {
     private DBAccess() {
     }
 
-    /**
-     * Erstellt die Instance mit dem Singleton Pattern.
-     *
-     * @return Die erstellte Instance
-     */
-    public static DBAccess getInstance() {
-        if (instance == null) {
-            instance = new DBAccess();
-        }
-        return instance;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     /**
      * Verbindet zu der Datenbank.

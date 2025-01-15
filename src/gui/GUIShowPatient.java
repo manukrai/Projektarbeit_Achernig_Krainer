@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutionException;
 
 
 public class GUIShowPatient {
@@ -59,8 +60,14 @@ public class GUIShowPatient {
                 );
 
                 if (result == JOptionPane.YES_OPTION) {
-                    DAOPatient.deletePatient(patient.getPatientID());
-                    gui.getAllPatientsFromDatabase();
+                    DAOPatient.deletePatientAsync(patient.getPatientID());
+                    try {
+                        gui.getAllPatientsFromDatabase();
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     gui.setTableModel();
                     frame.dispose();
                 }
@@ -72,58 +79,98 @@ public class GUIShowPatient {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIBefunde showBefunde = new GUIBefunde();
-                showBefunde.showBefunde(patient);
+                try {
+                    showBefunde.showBefunde(patient);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         btSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                int bundeslandId = -1;
                 int geschlechtId = -1;
                 int krankenkasseId = -1;
 
-                for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter()) {
-                    if (geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString())) {
-                        geschlechtId = geschlecht.getGeschlechtID();
+                try {
+                    for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechterAsync().get()) {
+                        if (geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString())) {
+                            geschlechtId = geschlecht.getGeschlechtID();
+                        }
                     }
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
                 }
 
-                for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
-                    if (krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString())) {
-                        krankenkasseId = krankenkasse.getKrankenkasseID();
+                try {
+                    for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassenAsync().get()) {
+                        if (krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString())) {
+                            krankenkasseId = krankenkasse.getKrankenkasseID();
+                        }
                     }
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
                 }
 
                 int bundeslandID = -1;
 
-                for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
-                    if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
-                        bundeslandID = bundesland.getBundeslandID();
-                    }
-                }
-
-                if (bundeslandID == -1) {
-                    DAOBundesland.addBundesland(tfBundesland.getText());
-                    for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+                try {
+                    for (Bundesland bundesland : DAOBundesland.getAllBundeslaenderAsync().get()) {
                         if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
                             bundeslandID = bundesland.getBundeslandID();
                         }
                     }
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                if (bundeslandID == -1) {
+                    try {
+                        DAOBundesland.addBundeslandAsync(tfBundesland.getText()).get();
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    try {
+                        for (Bundesland bundesland : DAOBundesland.getAllBundeslaenderAsync().get()) {
+                            if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
+                                bundeslandID = bundesland.getBundeslandID();
+                            }
+                        }
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
 
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
                 try {
-                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), tfGeburtsdatum.getText(), tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
+                    DAOPatient.updatePatientAsync(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), tfGeburtsdatum.getText(), tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
 
                 } catch (Exception ex) {
-                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), null, tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
+                    DAOPatient.updatePatientAsync(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), null, tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
                 }
 
 
-                gui.getAllPatientsFromDatabase();
+                try {
+                    gui.getAllPatientsFromDatabase();
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
                 gui.setTableModel();
                 frame.dispose();
 
@@ -137,7 +184,7 @@ public class GUIShowPatient {
      * @param patient Patient, dessen Daten bearbeitet werden sollen
      * @param gui     Haupt-GUI-Instanz
      */
-    public void editPatient(Patient patient, GUI gui) {
+    public void editPatient(Patient patient, GUI gui) throws ExecutionException, InterruptedException {
         this.patient = patient;
         this.gui = gui;
 
@@ -153,7 +200,7 @@ public class GUIShowPatient {
     /**
      * Füllt Eingabefelder mit aktuellen Daten des Patienten
      */
-    public void setTextFields() {
+    public void setTextFields() throws ExecutionException, InterruptedException {
         tfID.setText(String.valueOf(patient.getPatientID()));
         tfVorname.setText(patient.getVorname());
         tfNachname.setText(patient.getNachname());
@@ -165,21 +212,21 @@ public class GUIShowPatient {
         if (patient.getGeburtsdatum() != null)
             tfGeburtsdatum.setText(patient.getGeburtsdatum().toString());
 
-        for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter()) {
+        for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechterAsync().get()) {
             cbGeschlecht.addItem(geschlecht.getBezeichnung());
 
             if (geschlecht.getGeschlechtID() == patient.getGeschlechtID())
                 cbGeschlecht.setSelectedItem(geschlecht.getBezeichnung());
         }
 
-        for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
+        for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassenAsync().get()) {
             cbKrankenkasse.addItem(krankenkasse.getBezeichnung());
 
             if (krankenkasse.getKrankenkasseID() == patient.getKrankenkasseID())
                 cbKrankenkasse.setSelectedItem(krankenkasse.getBezeichnung());
         }
 
-        for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+        for (Bundesland bundesland : DAOBundesland.getAllBundeslaenderAsync().get()) {
             if (bundesland.getBundeslandID() == patient.getBundeslandID())
                 tfBundesland.setText(bundesland.getBezeichnung());
         }

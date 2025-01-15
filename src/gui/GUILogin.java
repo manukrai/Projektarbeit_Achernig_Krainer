@@ -5,6 +5,7 @@ import accountManagment.AccountManager;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Klasse implementiert die grafische Benutzeroberfläche für Login eines Patient Management Systems
@@ -51,7 +52,13 @@ public class GUILogin extends JFrame {
 
                     GUI gui = new GUI();
 
-                    gui.showPanel();
+                    try {
+                        gui.showPanel();
+                    } catch (ExecutionException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
 
                     frame.dispose();
                 } else {

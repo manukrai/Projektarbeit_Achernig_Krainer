@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +43,21 @@ public class DAOKrankenkasse {
         }
 
         return liste;
+    }
+
+    /**
+     * Liefert alle Krankenkassen zurück (asynchron).
+     *
+     * @return Ein CompletableFuture, das eine Liste aller Krankenkassen liefert.
+     */
+    public static CompletableFuture<List<Krankenkasse>> getAllKrankenkassenAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            logger.info("Starte asynchrone Abfrage für alle Krankenkassen.");
+            return getAllKrankenkassen(); // Nutzt die synchrone Methode
+        }).exceptionally(ex -> {
+            logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());
+            return new ArrayList<>(); // Leere Liste bei Fehler
+        });
     }
 
 }

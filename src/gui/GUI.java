@@ -11,6 +11,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Die Klasse implementiert das Hauptfenster der Patientenverwaltung
@@ -32,7 +33,7 @@ public class GUI extends JFrame {
      * Stellt Verbindung zur Datenbank her und lädt alle Patienten in die Tabelle
      */
 
-    public void showPanel() {
+    public void showPanel() throws ExecutionException, InterruptedException {
 
         frame = new JFrame("Patient Management System");
         frame.setContentPane(jPanel);
@@ -66,7 +67,13 @@ public class GUI extends JFrame {
 
                     for (Patient patient : patients) {
                         if (patient.getPatientID() == patientID) {
-                            showPatient.editPatient(patient, GUI.this);
+                            try {
+                                showPatient.editPatient(patient, GUI.this);
+                            } catch (ExecutionException ex) {
+                                throw new RuntimeException(ex);
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException(ex);
+                            }
                         }
                     }
 
@@ -96,9 +103,21 @@ public class GUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 GUIAddPatient guiAddPatient = new GUIAddPatient();
-                guiAddPatient.showFrame(GUI.this);
+                try {
+                    guiAddPatient.showFrame(GUI.this);
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
 
-                getAllPatientsFromDatabase();
+                try {
+                    getAllPatientsFromDatabase();
+                } catch (ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
                 setTableModel();
             }
         });
@@ -107,9 +126,9 @@ public class GUI extends JFrame {
     /**
      * Lädt alle Patienten aus der Datenbank in die Patientenliste
      */
-    public void getAllPatientsFromDatabase() {
+    public void getAllPatientsFromDatabase() throws ExecutionException, InterruptedException {
         DAOPatient dao = new DAOPatient();
-        patients = dao.getAllPatients();
+        patients = dao.getAllPatientsAsync().get();
     }
 
     /**
