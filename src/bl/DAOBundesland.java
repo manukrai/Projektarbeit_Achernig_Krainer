@@ -76,7 +76,6 @@ public class DAOBundesland {
      */
     public static CompletableFuture<List<Bundesland>> getAllBundeslaenderAsync() {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Starte asynchrone Abfrage für alle Bundesländer.");
             return getAllBundeslaender(); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());
@@ -92,7 +91,6 @@ public class DAOBundesland {
      */
     public static CompletableFuture<Void> addBundeslandAsync(String bezeichnung) {
         return CompletableFuture.runAsync(() -> {
-            logger.info("Füge asynchron ein neues Bundesland hinzu: " + bezeichnung);
             addBundesland(bezeichnung); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());

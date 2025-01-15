@@ -157,10 +157,10 @@ public class GUIShowPatient {
 
 
                 try {
-                    DAOPatient.updatePatientAsync(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), tfGeburtsdatum.getText(), tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
+                    DAOPatient.updatePatientAsync(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), tfGeburtsdatum.getText(), tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText()).join();
 
                 } catch (Exception ex) {
-                    DAOPatient.updatePatientAsync(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), null, tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
+                    DAOPatient.updatePatientAsync(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), null, tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText()).join();
                 }
 
 

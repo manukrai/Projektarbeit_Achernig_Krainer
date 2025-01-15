@@ -55,7 +55,6 @@ public class DAOGeschlecht {
      */
     public static CompletableFuture<List<Geschlecht>> getAllGeschlechterAsync() {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Starte asynchrone Abfrage für alle Geschlechter.");
             return getAllGeschlechter(); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());

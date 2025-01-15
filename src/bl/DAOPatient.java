@@ -235,7 +235,6 @@ public class DAOPatient {
      */
     public static CompletableFuture<List<Patient>> getAllPatientsAsync() {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Starte asynchrone Abfrage für alle Patienten.");
             return getAllPatients(); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());
@@ -251,7 +250,6 @@ public class DAOPatient {
      */
     public static CompletableFuture<Boolean> addPatientAsync(Patient patient) {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Füge asynchron einen Patienten hinzu.");
             return addPatient(patient); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());
@@ -267,7 +265,6 @@ public class DAOPatient {
      */
     public static CompletableFuture<Boolean> deletePatientAsync(int patientId) {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Lösche asynchron einen Patienten mit der ID: " + patientId);
             return deletePatient(patientId); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());
@@ -297,7 +294,6 @@ public class DAOPatient {
                                                              int bundesland, String telefon, int geschlechtID,
                                                              int krankenkasse, String sonstiges) {
         return CompletableFuture.runAsync(() -> {
-            logger.info("Aktualisiere asynchron den Patienten mit der ID: " + patientID);
             updatePatient(patientID, vorname, nachname, anrede, geburtsdatum, strasse, plz, ort, bundesland, telefon, geschlechtID, krankenkasse, sonstiges);
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankoperation: {0}", ex.getMessage());

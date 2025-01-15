@@ -52,7 +52,6 @@ public class DAOKrankenkasse {
      */
     public static CompletableFuture<List<Krankenkasse>> getAllKrankenkassenAsync() {
         return CompletableFuture.supplyAsync(() -> {
-            logger.info("Starte asynchrone Abfrage für alle Krankenkassen.");
             return getAllKrankenkassen(); // Nutzt die synchrone Methode
         }).exceptionally(ex -> {
             logger.log(Level.SEVERE, "Fehler bei der asynchronen Datenbankabfrage: {0}", ex.getMessage());
