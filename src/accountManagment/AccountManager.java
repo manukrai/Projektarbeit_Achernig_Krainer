@@ -20,6 +20,7 @@ public class AccountManager {
 
     /**
      * Diese Funktion erstellt einen User.
+     *
      * @param username
      * @param password
      * @return Bei False war der User bereits vorhanden.
@@ -34,6 +35,7 @@ public class AccountManager {
 
     /**
      * Hier wird der Login durchegführt.
+     *
      * @param username
      * @param password
      * @return zeigt ob es funktioniert hat.

@@ -17,6 +17,7 @@ public class Account {
 
     /**
      * Diese Methode vergleicht zwei Passwörter miteinander.
+     *
      * @param password
      * @return Ob sie gleich sind oder nicht.
      */

@@ -20,10 +20,12 @@ public class DBAccess {
     public static Connection connection = null;
     private static final Logger logger = Logger.getLogger(DBAccess.class.getName());
 
-    private DBAccess() {}
+    private DBAccess() {
+    }
 
     /**
      * Erstellt die Instance mit dem Singleton Pattern.
+     *
      * @return Die erstellte Instance
      */
     public static DBAccess getInstance() {
@@ -44,8 +46,7 @@ public class DBAccess {
     /**
      * Verbindet zu der Datenbank.
      */
-    public static void connect()
-    {
+    public static void connect() {
         try (BufferedReader reader = new BufferedReader(new FileReader("/Users/manuel.krainer/IntelliJ/Projektarbeit_Achernig_Krainer/src/data/databaseConnectionData.txt"))) {
             Properties properties = new Properties();
             properties.load(reader);

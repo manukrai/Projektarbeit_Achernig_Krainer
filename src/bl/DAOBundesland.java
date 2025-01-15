@@ -16,14 +16,14 @@ public class DAOBundesland {
 
     /**
      * Liefer alle Bundeslaender zurück.
+     *
      * @return Liste aller Bundeslaender.
      */
     public static List<Bundesland> getAllBundeslaender() {
         List<Bundesland> liste = new ArrayList<>();
         String query = "SELECT BundeslandID, Bezeichnung FROM bundesland";
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
             return liste;
         }
@@ -46,17 +46,15 @@ public class DAOBundesland {
 
     /**
      * Fügt ein neues Bundesland hinzu.
+     *
      * @param bezeichnung
      */
     public static void addBundesland(String bezeichnung) {
         String query = "INSERT INTO bundesland (Bezeichnung) VALUES (?)";
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
-        }
-        else
-        {
+        } else {
             try (PreparedStatement statement = DBAccess.connection.prepareStatement(query)) {
 
                 statement.setString(1, bezeichnung);

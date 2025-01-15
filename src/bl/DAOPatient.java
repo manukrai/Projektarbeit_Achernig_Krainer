@@ -17,27 +17,27 @@ public class DAOPatient {
 
     /**
      * Liefert alle Patienten zurück
+     *
      * @return Liste aller Patienten.
      */
     public static List<Patient> getAllPatients() {
         List<Patient> patients = new LinkedList<>();
         String query = """
-            SELECT 
-                p.PatientID, p.Vorname, p.Nachname, p.Anrede, p.Geburtsdatum, 
-                p.Strasse, p.PLZ, p.Ort, p.Telefon, p.Sonstiges, 
-                b.bundeslandid AS Bundesland, 
-                g.geschlechtid AS Geschlecht, 
-                k.krankenkasseid AS Krankenkasse
-            FROM patient p
-            LEFT JOIN bundesland b ON p.Bundesland = b.BundeslandID
-            LEFT JOIN geschlecht g ON p.GeschlechtID = g.GeschlechtID
-            LEFT JOIN krankenkasse k ON p.Krankenkasse = k.KrankenkasseID;
-        """;
+                    SELECT 
+                        p.PatientID, p.Vorname, p.Nachname, p.Anrede, p.Geburtsdatum, 
+                        p.Strasse, p.PLZ, p.Ort, p.Telefon, p.Sonstiges, 
+                        b.bundeslandid AS Bundesland, 
+                        g.geschlechtid AS Geschlecht, 
+                        k.krankenkasseid AS Krankenkasse
+                    FROM patient p
+                    LEFT JOIN bundesland b ON p.Bundesland = b.BundeslandID
+                    LEFT JOIN geschlecht g ON p.GeschlechtID = g.GeschlechtID
+                    LEFT JOIN krankenkasse k ON p.Krankenkasse = k.KrankenkasseID;
+                """;
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
             return patients;
         }
@@ -51,8 +51,8 @@ public class DAOPatient {
                 patient.setVorname(rs.getString("Vorname"));
                 patient.setNachname(rs.getString("Nachname"));
                 patient.setAnrede(rs.getString("Anrede"));
-                if(rs.getString("geburtsdatum")!=null)
-                patient.setGeburtsdatum(rs.getString("Geburtsdatum"));
+                if (rs.getString("geburtsdatum") != null)
+                    patient.setGeburtsdatum(rs.getString("Geburtsdatum"));
                 patient.setStrasse(rs.getString("Strasse"));
                 patient.setPlz(rs.getString("PLZ"));
                 patient.setOrt(rs.getString("Ort"));
@@ -77,19 +77,19 @@ public class DAOPatient {
 
     /**
      * Fügt einem Patienten hinzu.
+     *
      * @param patient
      * @return Ob es funktioniert hat.
      */
     public static boolean addPatient(Patient patient) {
         String query = """
-        INSERT INTO patient (
-            Vorname, Nachname, Anrede, Geburtsdatum, Strasse, PLZ, Ort, 
-            Bundesland, Telefon, GeschlechtID, Krankenkasse, Sonstiges
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-    """;
+                    INSERT INTO patient (
+                        Vorname, Nachname, Anrede, Geburtsdatum, Strasse, PLZ, Ort, 
+                        Bundesland, Telefon, GeschlechtID, Krankenkasse, Sonstiges
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+                """;
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
             return false;
         }
@@ -99,12 +99,9 @@ public class DAOPatient {
             stmt.setString(1, patient.getVorname());
             stmt.setString(2, patient.getNachname());
             stmt.setString(3, patient.getAnrede());
-            if(patient.getGeburtsdatum()!=null)
-            {
+            if (patient.getGeburtsdatum() != null) {
                 stmt.setDate(4, Date.valueOf(patient.getGeburtsdatum()));
-            }
-            else
-            {
+            } else {
                 stmt.setNull(4, java.sql.Types.DATE);
             }
             stmt.setString(5, patient.getStrasse());
@@ -130,6 +127,7 @@ public class DAOPatient {
 
     /**
      * Löscht einen Patienten aus der Datenbank.
+     *
      * @param patientId
      * @return Ob es funktioniert hat.
      */
@@ -137,19 +135,18 @@ public class DAOPatient {
         String sql = "DELETE FROM patient WHERE PatientID = ?";
         String sql_befund = "DELETE FROM befund WHERE PatientID = ?";
 
-        if(DBAccess.connection != null)
-        try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql_befund)) {
-            statement.setInt(1, patientId);
-            int rowsAffected = statement.executeUpdate();
+        if (DBAccess.connection != null)
+            try (PreparedStatement statement = DBAccess.connection.prepareStatement(sql_befund)) {
+                statement.setInt(1, patientId);
+                int rowsAffected = statement.executeUpdate();
 
-        } catch (SQLException ex) {
-            logger.setLevel(Level.ALL);
-            logger.severe(ex.getMessage());
-            return false;
-        }
+            } catch (SQLException ex) {
+                logger.setLevel(Level.ALL);
+                logger.severe(ex.getMessage());
+                return false;
+            }
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
             return false;
         }
@@ -172,6 +169,7 @@ public class DAOPatient {
 
     /**
      * Updated die Daten im Patienten.
+     *
      * @param patientID
      * @param vorname
      * @param nachname
@@ -187,32 +185,26 @@ public class DAOPatient {
      * @param sonstiges
      */
     public static void updatePatient(int patientID, String vorname, String nachname, String anrede, String geburtsdatum,
-                              String strasse, String plz, String ort, int bundesland, String telefon, int geschlechtID,
-                              int krankenkasse, String sonstiges) {
+                                     String strasse, String plz, String ort, int bundesland, String telefon, int geschlechtID,
+                                     int krankenkasse, String sonstiges) {
 
-            String updateSQL = "UPDATE patient SET Vorname = ?, Nachname = ?, Anrede = ?, Geburtsdatum = ?, Strasse = ?, " +
-                    "PLZ = ?, Ort = ?, Bundesland = ?, Telefon = ?, GeschlechtID = ?, Krankenkasse = ?, Sonstiges = ? " +
-                    "WHERE PatientID = ?";
+        String updateSQL = "UPDATE patient SET Vorname = ?, Nachname = ?, Anrede = ?, Geburtsdatum = ?, Strasse = ?, " +
+                "PLZ = ?, Ort = ?, Bundesland = ?, Telefon = ?, GeschlechtID = ?, Krankenkasse = ?, Sonstiges = ? " +
+                "WHERE PatientID = ?";
 
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
-        }
-        else
-        {
+        } else {
             try (PreparedStatement stmt = DBAccess.connection.prepareStatement(updateSQL);) {
                 // PreparedStatement für das Update vorbereiten
 
                 stmt.setString(1, vorname);
                 stmt.setString(2, nachname);
                 stmt.setString(3, anrede);
-                if(geburtsdatum!=null)
-                {
+                if (geburtsdatum != null) {
                     stmt.setDate(4, Date.valueOf(geburtsdatum));
-                }
-                else
-                {
+                } else {
                     stmt.setNull(4, java.sql.Types.DATE);
                 }
                 stmt.setString(5, strasse);

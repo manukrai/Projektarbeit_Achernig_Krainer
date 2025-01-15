@@ -83,39 +83,30 @@ public class GUIShowPatient {
                 int geschlechtId = -1;
                 int krankenkasseId = -1;
 
-                for(Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter())
-                {
-                    if(geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString()))
-                    {
+                for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter()) {
+                    if (geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString())) {
                         geschlechtId = geschlecht.getGeschlechtID();
                     }
                 }
 
-                for(Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen())
-                {
-                    if(krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString()))
-                    {
+                for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
+                    if (krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString())) {
                         krankenkasseId = krankenkasse.getKrankenkasseID();
                     }
                 }
 
                 int bundeslandID = -1;
 
-                for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
-                {
-                    if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
-                    {
+                for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+                    if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
                         bundeslandID = bundesland.getBundeslandID();
                     }
                 }
 
-                if(bundeslandID == -1)
-                {
+                if (bundeslandID == -1) {
                     DAOBundesland.addBundesland(tfBundesland.getText());
-                    for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
-                    {
-                        if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
-                        {
+                    for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+                        if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
                             bundeslandID = bundesland.getBundeslandID();
                         }
                     }
@@ -124,14 +115,11 @@ public class GUIShowPatient {
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-                try
-                {
-                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),tfGeburtsdatum.getText(),tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+                try {
+                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), tfGeburtsdatum.getText(), tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
 
-                }
-                catch (Exception ex)
-                {
-                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()),tfVorname.getText(),tfNachname.getText(),cbAnrede.getSelectedItem().toString(),null,tfStrasse.getText(),tfPlz.getText(),tfOrt.getText(),bundeslandID,tfTelefonnummer.getText(),geschlechtId,krankenkasseId,tfAnmerkung.getText());
+                } catch (Exception ex) {
+                    DAOPatient.updatePatient(Integer.parseInt(tfID.getText()), tfVorname.getText(), tfNachname.getText(), cbAnrede.getSelectedItem().toString(), null, tfStrasse.getText(), tfPlz.getText(), tfOrt.getText(), bundeslandID, tfTelefonnummer.getText(), geschlechtId, krankenkasseId, tfAnmerkung.getText());
                 }
 
 
@@ -145,10 +133,11 @@ public class GUIShowPatient {
 
     /**
      * Öffnet GUI zur Bearbeitung der Daten des angegebenen Patienten
+     *
      * @param patient Patient, dessen Daten bearbeitet werden sollen
-     * @param gui Haupt-GUI-Instanz
+     * @param gui     Haupt-GUI-Instanz
      */
-    public void editPatient(Patient patient,GUI gui) {
+    public void editPatient(Patient patient, GUI gui) {
         this.patient = patient;
         this.gui = gui;
 
@@ -164,8 +153,7 @@ public class GUIShowPatient {
     /**
      * Füllt Eingabefelder mit aktuellen Daten des Patienten
      */
-    public void setTextFields()
-    {
+    public void setTextFields() {
         tfID.setText(String.valueOf(patient.getPatientID()));
         tfVorname.setText(patient.getVorname());
         tfNachname.setText(patient.getNachname());
@@ -174,28 +162,25 @@ public class GUIShowPatient {
         tfPlz.setText(patient.getPlz());
         tfTelefonnummer.setText(patient.getTelefon());
         tfAnmerkung.setText(patient.getSonstiges());
-        if(patient.getGeburtsdatum() != null)
-        tfGeburtsdatum.setText(patient.getGeburtsdatum().toString());
+        if (patient.getGeburtsdatum() != null)
+            tfGeburtsdatum.setText(patient.getGeburtsdatum().toString());
 
-        for(Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter())
-        {
+        for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter()) {
             cbGeschlecht.addItem(geschlecht.getBezeichnung());
 
-            if(geschlecht.getGeschlechtID() == patient.getGeschlechtID())
+            if (geschlecht.getGeschlechtID() == patient.getGeschlechtID())
                 cbGeschlecht.setSelectedItem(geschlecht.getBezeichnung());
         }
 
-        for(Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen())
-        {
+        for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
             cbKrankenkasse.addItem(krankenkasse.getBezeichnung());
 
-            if(krankenkasse.getKrankenkasseID() == patient.getKrankenkasseID())
+            if (krankenkasse.getKrankenkasseID() == patient.getKrankenkasseID())
                 cbKrankenkasse.setSelectedItem(krankenkasse.getBezeichnung());
         }
 
-        for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
-        {
-            if(bundesland.getBundeslandID() == patient.getBundeslandID())
+        for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+            if (bundesland.getBundeslandID() == patient.getBundeslandID())
                 tfBundesland.setText(bundesland.getBezeichnung());
         }
 

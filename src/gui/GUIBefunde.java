@@ -36,9 +36,8 @@ public class GUIBefunde {
         btAddBefund.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!tfUrl.getText().isEmpty() && !tfName.getText().equals("URL eingeben"))
-                {
-                    DAOBefund.addBefund(patient.getPatientID(),tfUrl.getText(), LocalDate.now());
+                if (!tfUrl.getText().isEmpty() && !tfName.getText().equals("URL eingeben")) {
+                    DAOBefund.addBefund(patient.getPatientID(), tfUrl.getText(), LocalDate.now());
                     updateTable();
                 }
 
@@ -50,13 +49,11 @@ public class GUIBefunde {
      * Aktualisiert die Tabelle mit den Befunden des Patienten
      * Holt die Befunddaten aus der Datenbank und zeigt sie in der JTable an
      */
-    public void updateTable()
-    {
-        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","URL","Datum"}){
+    public void updateTable() {
+        DefaultTableModel model = new DefaultTableModel(null, new String[]{"ID", "URL", "Datum"}) {
 
             @Override
-            public boolean isCellEditable(int row, int column)
-            {
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
@@ -71,14 +68,14 @@ public class GUIBefunde {
         lbHeader.add(header);
         tbBefund.getTableHeader().setReorderingAllowed(false);
 
-        for(Befund befund : DAOBefund.getBefundeByPatientID(patient.getPatientID()))
-        {
-            model.addRow(new Object[]{befund.getBefundID(),befund.getPfad(),befund.getDatum().toString()});
+        for (Befund befund : DAOBefund.getBefundeByPatientID(patient.getPatientID())) {
+            model.addRow(new Object[]{befund.getBefundID(), befund.getPfad(), befund.getDatum().toString()});
         }
     }
 
     /**
      * Zeigt GUI zur Anzeige und Bearbeitung der Befunde eines Patienten an
+     *
      * @param p Das Patientenobjekt dessen Befund angezeigt werden sollen
      */
     public void showBefunde(Patient p) {
@@ -94,7 +91,7 @@ public class GUIBefunde {
 
         updateTable();
 
-        setPlaceholder(tfUrl,"URL eingeben");
+        setPlaceholder(tfUrl, "URL eingeben");
 
 
     }
@@ -102,7 +99,8 @@ public class GUIBefunde {
     /**
      * Setzt einen Placeholder-Text in ein JTextField
      * Placeholder-Text wird angezeigt, solange das Textfeld leer ist
-     * @param textField Das JText-Field, in dem der Placeholder angezeigt werden soll
+     *
+     * @param textField   Das JText-Field, in dem der Placeholder angezeigt werden soll
      * @param placeholder Der Placeholder-Text
      */
     public static void setPlaceholder(JTextField textField, String placeholder) {

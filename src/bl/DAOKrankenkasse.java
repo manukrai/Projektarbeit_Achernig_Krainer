@@ -16,14 +16,14 @@ public class DAOKrankenkasse {
 
     /**
      * Liefer alle Krankhäuser zurück.
+     *
      * @return Liste aller Krankenhäuser.
      */
     public static List<Krankenkasse> getAllKrankenkassen() {
         List<Krankenkasse> liste = new ArrayList<>();
         String query = "SELECT KrankenkasseID, Bezeichnung FROM krankenkasse";
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
             return liste;
         }

@@ -48,8 +48,7 @@ public class GUIAddPatient {
     public GUIAddPatient() {
         btAdd.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
                 Patient newPatient = new Patient();
 
                 newPatient.setVorname(tfVorname.getText());
@@ -62,12 +61,9 @@ public class GUIAddPatient {
                 newPatient.setKrankenkasseID(2);
                 newPatient.setSonstiges(tfAnmerkung.getText());
 
-                try
-                {
+                try {
                     newPatient.setGeburtsdatum(tfGeburtsdatum.getText());
-                }
-                catch(DateTimeParseException ex)
-                {
+                } catch (DateTimeParseException ex) {
                     JOptionPane.showMessageDialog(frame, "Datums Format nicht passend!");
                     Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
                     logger.setLevel(Level.ALL);
@@ -76,39 +72,30 @@ public class GUIAddPatient {
 
                 List<Geschlecht> geschlechtList = DAOGeschlecht.getAllGeschlechter();
 
-                for(Geschlecht geschlecht : geschlechtList)
-                {
-                    if(geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString()))
-                    {
+                for (Geschlecht geschlecht : geschlechtList) {
+                    if (geschlecht.getBezeichnung().equals(cbGeschlecht.getSelectedItem().toString())) {
                         newPatient.setGeschlechtID(geschlecht.getGeschlechtID());
                     }
                 }
 
-                for(Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen())
-                {
-                    if(krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString()))
-                    {
+                for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
+                    if (krankenkasse.getBezeichnung().equals(cbKrankenkasse.getSelectedItem().toString())) {
                         newPatient.setKrankenkasseID(krankenkasse.getKrankenkasseID());
                     }
                 }
 
                 int bundeslandID = -1;
 
-                for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
-                {
-                    if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
-                    {
-                       bundeslandID = bundesland.getBundeslandID();
+                for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+                    if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
+                        bundeslandID = bundesland.getBundeslandID();
                     }
                 }
 
-                if(bundeslandID == -1)
-                {
+                if (bundeslandID == -1) {
                     DAOBundesland.addBundesland(tfBundesland.getText());
-                    for(Bundesland bundesland : DAOBundesland.getAllBundeslaender())
-                    {
-                        if(bundesland.getBezeichnung().equals(tfBundesland.getText()))
-                        {
+                    for (Bundesland bundesland : DAOBundesland.getAllBundeslaender()) {
+                        if (bundesland.getBezeichnung().equals(tfBundesland.getText())) {
                             bundeslandID = bundesland.getBundeslandID();
                         }
                     }
@@ -127,10 +114,10 @@ public class GUIAddPatient {
 
     /**
      * Zeigt das Fenster zum Hinzufügen eines Patienten an
+     *
      * @param gui Referenz zur Haupt-GUI, um die Patiententabelle nach dem Hinzufügen zu aktualisieren.
      */
-    public void showFrame(GUI gui)
-    {
+    public void showFrame(GUI gui) {
         this.gui = gui;
 
         frame = new JFrame("Patient hinzufügen");
@@ -140,24 +127,22 @@ public class GUIAddPatient {
         frame.setVisible(true);
 
 
-
-        for(Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter())
-        {
+        for (Geschlecht geschlecht : DAOGeschlecht.getAllGeschlechter()) {
             cbGeschlecht.addItem(geschlecht.getBezeichnung());
         }
 
-        for(Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen())
-        {
+        for (Krankenkasse krankenkasse : DAOKrankenkasse.getAllKrankenkassen()) {
             cbKrankenkasse.addItem(krankenkasse.getBezeichnung());
         }
 
-        setPlaceholder(tfGeburtsdatum,"yyyy-mm-dd");
+        setPlaceholder(tfGeburtsdatum, "yyyy-mm-dd");
     }
 
     /**
      * Setzt einen Placeholder-Text in ein JTextField
      * Placeholder-Text wird angezeigt, solange das Textfeld leer ist
-     * @param textField Das JText-Field, in dem der Placeholder angezeigt werden soll
+     *
+     * @param textField   Das JText-Field, in dem der Placeholder angezeigt werden soll
      * @param placeholder Der Placeholder-Text
      */
     public static void setPlaceholder(JTextField textField, String placeholder) {

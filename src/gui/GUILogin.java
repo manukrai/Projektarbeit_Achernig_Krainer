@@ -11,8 +11,7 @@ import java.awt.event.ActionListener;
  * Benutzer können ihre Anmeldedaten eingeben um Zugriff auf die Hauptanwendung zu erhalten
  * Bei flaschen Eingaben wird Fehlermeldung angezeigt
  */
-public class GUILogin extends JFrame
-{
+public class GUILogin extends JFrame {
     private static JFrame frame;
     private JButton btConnect;
     private JPanel loginPanel;
@@ -23,6 +22,7 @@ public class GUILogin extends JFrame
     /**
      * Einstiegspunkt für die Anwendung
      * Startet Login-Fenster und initialisiert GUI
+     *
      * @param args Kommandozeilenargumente (nicht verwendet)
      */
     public static void main(String[] args) {

@@ -16,8 +16,7 @@ import java.util.List;
  * Die Klasse implementiert das Hauptfenster der Patientenverwaltung
  * Sie enthält eine grafische Benutzeroberfläche zur Anzeige und Verwaltung von Patientenformationen
  */
-public class GUI extends JFrame
-{
+public class GUI extends JFrame {
     private static JFrame frame;
     private JPanel jPanel;
     private JTable patientTable;
@@ -25,7 +24,7 @@ public class GUI extends JFrame
     private JPanel panelHeader;
     private JPanel panelTable;
     private JButton btAddPatient;
-    private List<Patient>  patients;
+    private List<Patient> patients;
     TableRowSorter<TableModel> sorter;
 
     /**
@@ -33,8 +32,7 @@ public class GUI extends JFrame
      * Stellt Verbindung zur Datenbank her und lädt alle Patienten in die Tabelle
      */
 
-    public void showPanel()
-    {
+    public void showPanel() {
 
         frame = new JFrame("Patient Management System");
         frame.setContentPane(jPanel);
@@ -59,25 +57,23 @@ public class GUI extends JFrame
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
 
-                if(e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) {
+                if (e.getClickCount() == 2 && patientTable.getSelectedRow() != -1) {
 
 
+                    int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(), 0);
 
-                        int patientID = (Integer) patientTable.getValueAt(patientTable.getSelectedRow(),0);
+                    GUIShowPatient showPatient = new GUIShowPatient();
 
-                        GUIShowPatient showPatient = new GUIShowPatient();
-
-                        for (Patient patient : patients) {
-                            if(patient.getPatientID() == patientID) {
-                                showPatient.editPatient(patient,GUI.this);
-                            }
+                    for (Patient patient : patients) {
+                        if (patient.getPatientID() == patientID) {
+                            showPatient.editPatient(patient, GUI.this);
                         }
-
+                    }
 
 
                 }
 
-                
+
             }
         });
         /**
@@ -111,8 +107,7 @@ public class GUI extends JFrame
     /**
      * Lädt alle Patienten aus der Datenbank in die Patientenliste
      */
-    public void getAllPatientsFromDatabase()
-    {
+    public void getAllPatientsFromDatabase() {
         DAOPatient dao = new DAOPatient();
         patients = dao.getAllPatients();
     }
@@ -120,15 +115,13 @@ public class GUI extends JFrame
     /**
      * Setzt das Tabellenmodell für die Patiententabelle und lädt die Patientendaten in die Tabelle
      */
-    public void setTableModel()
-    {
-        setPlaceholder(tfSearch,"Suche");
+    public void setTableModel() {
+        setPlaceholder(tfSearch, "Suche");
 
-        DefaultTableModel model = new DefaultTableModel(null,new String []{"ID","Anrede","Vorname","Nachname"}){
+        DefaultTableModel model = new DefaultTableModel(null, new String[]{"ID", "Anrede", "Vorname", "Nachname"}) {
 
             @Override
-            public boolean isCellEditable(int row, int column)
-            {
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
@@ -142,9 +135,8 @@ public class GUI extends JFrame
         panelHeader.add(header);
         patientTable.getTableHeader().setReorderingAllowed(false);
 
-        for(Patient patient : patients)
-        {
-            model.addRow(new Object[]{patient.getPatientID(),patient.getAnrede(),patient.getVorname(),patient.getNachname()});
+        for (Patient patient : patients) {
+            model.addRow(new Object[]{patient.getPatientID(), patient.getAnrede(), patient.getVorname(), patient.getNachname()});
         }
 
 
@@ -157,7 +149,8 @@ public class GUI extends JFrame
 
     /**
      * Setzt einen Platzhalter-Text in ein Textfeld
-     * @param textField Textfeld, in dem der Platzhalter angezeigt wird
+     *
+     * @param textField   Textfeld, in dem der Platzhalter angezeigt wird
      * @param placeholder Der anzuzeigende Platzhalter-Text
      */
     public static void setPlaceholder(JTextField textField, String placeholder) {

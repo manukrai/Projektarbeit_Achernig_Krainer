@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Patient implements Comparable<Patient>
-{
+public class Patient implements Comparable<Patient> {
     private int patientID;
     private String vorname;
     private String nachname;
@@ -21,10 +20,9 @@ public class Patient implements Comparable<Patient>
     private String sonstiges;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    // Standard-Konstruktor
-    public Patient() {}
+    public Patient() {
+    }
 
-    // Konstruktor mit Parametern
     public Patient(int patientID, String vorname, String nachname, String anrede, String geburtsdatum, String strasse,
                    String plz, String ort, int bundesland, String telefon, int geschlechtID, int krankenkasse, String sonstiges) {
         this.patientID = patientID;
@@ -79,8 +77,7 @@ public class Patient implements Comparable<Patient>
         return geburtsdatum;
     }
 
-    public void setGeburtsdatum(String geburtsdatum) throws DateTimeParseException
-    {
+    public void setGeburtsdatum(String geburtsdatum) throws DateTimeParseException {
         this.geburtsdatum = LocalDate.parse(geburtsdatum, formatter);
     }
 

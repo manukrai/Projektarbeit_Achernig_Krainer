@@ -16,6 +16,7 @@ public class DAOGeschlecht {
 
     /**
      * Liefert alle Geschlechter zurück.
+     *
      * @return Liefer eine Liste aller Geschlechter zurück.
      */
     public static List<Geschlecht> getAllGeschlechter() {
@@ -23,8 +24,7 @@ public class DAOGeschlecht {
 
         String query = "SELECT GeschlechtID, Bezeichnung FROM geschlecht";
 
-        if(DBAccess.connection == null)
-        {
+        if (DBAccess.connection == null) {
             logger.severe("Keine Verbindung zur Datenbank verfügbar.");
             return geschlechterListe;
         }
