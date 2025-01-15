@@ -26,7 +26,7 @@ public class GUI extends JFrame {
     private JPanel panelTable;
     private JButton btAddPatient;
     private List<Patient> patients;
-    TableRowSorter<TableModel> sorter;
+    private TableRowSorter<TableModel> sorter;
 
     /**
      * Zeigt Hauptfenster der Anwendung
@@ -88,14 +88,15 @@ public class GUI extends JFrame {
          */
         tfSearch.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyTyped(KeyEvent e) {
-                super.keyPressed(e);
-
-                String searchText = tfSearch.getText();
-                if (searchText.trim().length() == 0) {
-                    sorter.setRowFilter(null); // Filter zurücksetzen
-                } else {
-                    sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText)); // Filter anwenden
+            public void keyPressed(KeyEvent e) {
+                // Überprüfen, ob die gedrückte Taste die Enter-Taste ist
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    String searchText = tfSearch.getText();
+                    if (searchText.trim().length() == 0) {
+                        sorter.setRowFilter(null); // Filter zurücksetzen
+                    } else {
+                        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText)); // Filter anwenden
+                    }
                 }
             }
         });
@@ -135,7 +136,7 @@ public class GUI extends JFrame {
      * Setzt das Tabellenmodell für die Patiententabelle und lädt die Patientendaten in die Tabelle
      */
     public void setTableModel() {
-        setPlaceholder(tfSearch, "Suche");
+        setPlaceholder(tfSearch, "Suche [Enter]");
 
         DefaultTableModel model = new DefaultTableModel(null, new String[]{"ID", "Anrede", "Vorname", "Nachname"}) {
 

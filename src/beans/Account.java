@@ -1,4 +1,4 @@
-package accountManagment;
+package beans;
 
 public class Account {
     /**

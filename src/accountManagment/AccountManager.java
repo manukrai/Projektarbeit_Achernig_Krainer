@@ -1,5 +1,7 @@
 package accountManagment;
 
+import beans.Account;
+
 import java.util.HashMap;
 
 public class AccountManager {
