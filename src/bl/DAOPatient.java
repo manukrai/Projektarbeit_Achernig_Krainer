@@ -119,7 +119,6 @@ public class DAOPatient {
             return rowsInserted > 0;
 
         } catch (SQLException ex) {
-            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
             logger.setLevel(Level.ALL);
             logger.severe(ex.getMessage());
             return false;
@@ -203,7 +202,7 @@ public class DAOPatient {
                 stmt.setString(1, vorname);
                 stmt.setString(2, nachname);
                 stmt.setString(3, anrede);
-                if (geburtsdatum != null) {
+                if (!geburtsdatum.isBlank()) {
                     stmt.setDate(4, Date.valueOf(geburtsdatum));
                 } else {
                     stmt.setNull(4, java.sql.Types.DATE);

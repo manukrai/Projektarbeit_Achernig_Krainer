@@ -42,6 +42,7 @@ public class GUIAddPatient {
     private JTextField tfBundesland;
     private JComboBox cbKrankenkasse;
     private GUI gui;
+    private static final Logger logger = Logger.getLogger(GUIAddPatient.class.getName());
 
     /**
      * Konstruktor fügt ActionListener für den Hinzufügen- Button hinzu, um Patienten zu erfassen und zu speichern
@@ -65,10 +66,13 @@ public class GUIAddPatient {
                 try {
                     newPatient.setGeburtsdatum(tfGeburtsdatum.getText());
                 } catch (DateTimeParseException ex) {
-                    JOptionPane.showMessageDialog(frame, "Datums Format nicht passend!");
-                    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-                    logger.setLevel(Level.ALL);
-                    logger.warning("Falsches Datums Format!");
+
+                    if(!tfGeburtsdatum.getText().equals("yyyy-mm-dd") && !tfGeburtsdatum.getText().equals(""))
+                    {
+                        logger.setLevel(Level.ALL);
+                        logger.warning("Datums Format ist nicht passend [yyyy-mm-dd]");
+                    }
+
                 }
 
                 List<Geschlecht> geschlechtList = null;
