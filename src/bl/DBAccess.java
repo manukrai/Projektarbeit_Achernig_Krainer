@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 
 public class DBAccess {
 
-    private static String url = "jdbc:postgresql://localhost:5432/Patient";
-    private static String user = "postgres";
-    private static String password = "root";
+    private static String url;
+    private static String user;
+    private static String password;
     public static Connection connection = null;
     private static final Logger logger = Logger.getLogger(DBAccess.class.getName());
 
